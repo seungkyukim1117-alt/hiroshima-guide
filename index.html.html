@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>🗾 히로시마 여행 가이드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f13;
+    --surface: #1a1a22;
+    --surface2: #22222e;
+    --surface3: #2a2a38;
+    --border: #2e2e3e;
+    --accent: #ff6b35;
+    --accent2: #ffd23f;
+    --accent3: #06d6a0;
+    --text: #f0f0f5;
+    --text2: #a0a0b8;
+    --text3: #606078;
+    --red: #ff4757;
+    --blue: #4a9eff;
+    --purple: #9b59b6;
+  }
+  
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Header */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    padding: 16px 16px 0;
+    border-bottom: 1px solid rgba(255,107,53,0.2);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .header-title {
+    font-size: 22px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #ff6b35, #ffd23f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    flex: 1;
+  }
+
+  .count-badge {
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+
+  /* Search */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 10px;
+  }
+
+  .search-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-size: 15px;
+    font-family: 'Noto Sans KR', sans-serif;
+    padding: 10px 42px 10px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-input:focus {
+    border-color: var(--accent);
+  }
+
+  .search-input::placeholder { color: var(--text3); }
+
+  .search-clear {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text3);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px;
+    display: none;
+  }
+
+  /* Filter Tabs */
+  .filter-section {
+    padding: 8px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .filter-row {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: none;
+  }
+  .filter-row::-webkit-scrollbar { display: none; }
+
+  .filter-btn {
+    flex-shrink: 0;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    color: var(--text2);
+    font-size: 12px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 500;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+    font-weight: 700;
+  }
+
+  .filter-btn:active { transform: scale(0.95); }
+
+  /* Sort & View */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    gap: 8px;
+  }
+
+  .sort-select {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text2);
+    font-size: 12px;
+    font-family: 'Noto Sans KR', sans-serif;
+    padding: 5px 8px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .area-select {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text2);
+    font-size: 12px;
+    font-family: 'Noto Sans KR', sans-serif;
+    padding: 5px 8px;
+    cursor: pointer;
+    outline: none;
+    flex: 1;
+  }
+
+  .view-btns {
+    display: flex;
+    gap: 4px;
+  }
+
+  .view-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text3);
+    font-size: 14px;
+    padding: 4px 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .view-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  /* List View */
+  .list-container {
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 80px;
+  }
+
+  .place-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.1s, box-shadow 0.1s;
+    cursor: pointer;
+  }
+
+  .place-card:active { transform: scale(0.98); }
+
+  .card-main {
+    padding: 12px 14px;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .cat-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    background: var(--surface2);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .card-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 6px;
+  }
+
+  .badge-cat {
+    background: rgba(255,107,53,0.15);
+    color: var(--accent);
+    border: 1px solid rgba(255,107,53,0.3);
+  }
+
+  .badge-area {
+    background: rgba(74,158,255,0.15);
+    color: var(--blue);
+    border: 1px solid rgba(74,158,255,0.3);
+  }
+
+  .badge-chain {
+    background: rgba(160,160,184,0.1);
+    color: var(--text3);
+    border: 1px solid var(--border);
+    font-size: 10px;
+  }
+
+  .rating-wrap {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+  }
+
+  .stars {
+    color: var(--accent2);
+    font-size: 13px;
+  }
+
+  .rating-num {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent2);
+  }
+
+  .review-count {
+    font-size: 11px;
+    color: var(--text3);
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.5;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-tags {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  .tag {
+    font-size: 11px;
+    color: var(--text3);
+    background: var(--surface2);
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  .card-quick {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .quick-info {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--text2);
+    background: var(--surface2);
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+
+  .card-actions {
+    display: flex;
+    border-top: 1px solid var(--border);
+  }
+
+  .action-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--text2);
+    font-size: 12px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 500;
+    padding: 10px 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .action-btn:not(:last-child) {
+    border-right: 1px solid var(--border);
+  }
+
+  .action-btn:active { background: var(--surface2); }
+  .action-btn.map-btn { color: var(--accent3); }
+  .action-btn.save-btn { color: var(--accent2); }
+  .action-btn.saved { color: var(--accent2); }
+
+  /* Expanded Card */
+  .card-expanded {
+    border-top: 1px solid var(--border);
+    padding: 12px 14px;
+    background: var(--surface2);
+    display: none;
+  }
+
+  .card-expanded.open { display: block; }
+
+  .exp-section {
+    margin-bottom: 12px;
+  }
+
+  .exp-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .exp-value {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .exp-highlight {
+    background: rgba(255,107,53,0.1);
+    border-left: 3px solid var(--accent);
+    padding: 8px 10px;
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .exp-warn {
+    background: rgba(255,71,87,0.1);
+    border-left: 3px solid var(--red);
+    padding: 8px 10px;
+    border-radius: 0 6px 6px 0;
+    font-size: 12px;
+    color: #ff9fa8;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .exp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .exp-chip {
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 8px;
+  }
+
+  .exp-chip-label {
+    font-size: 10px;
+    color: var(--text3);
+    margin-bottom: 2px;
+  }
+
+  .exp-chip-value {
+    font-size: 12px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* Compact view */
+  .compact-view .card-desc,
+  .compact-view .card-tags,
+  .compact-view .card-quick {
+    display: none;
+  }
+
+  .compact-view .card-main {
+    padding: 9px 12px;
+  }
+
+  .compact-view .card-header {
+    margin-bottom: 0;
+    align-items: center;
+  }
+
+  .compact-view .cat-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    border-radius: 7px;
+  }
+
+  /* Saved screen */
+  #saved-screen {
+    display: none;
+    padding: 10px 12px;
+    padding-bottom: 80px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text3);
+  }
+
+  .empty-state .icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+  }
+
+  .empty-state p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* Bottom Nav */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex;
+    padding: 6px 0;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .nav-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--text3);
+    font-size: 10px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 500;
+    padding: 6px 4px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    transition: color 0.15s;
+  }
+
+  .nav-btn .nav-icon { font-size: 20px; }
+  .nav-btn.active { color: var(--accent); }
+
+  /* Result count */
+  .result-info {
+    padding: 6px 16px;
+    font-size: 12px;
+    color: var(--text3);
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .result-info span { color: var(--accent); font-weight: 700; }
+
+  /* Scroll to top */
+  .scroll-top {
+    position: fixed;
+    bottom: 80px;
+    right: 16px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(255,107,53,0.4);
+    z-index: 99;
+  }
+
+  .scroll-top.visible { display: flex; }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .place-card {
+    animation: fadeIn 0.2s ease;
+  }
+
+  /* Review Quote */
+  .review-quote {
+    font-style: italic;
+    color: var(--text2);
+    font-size: 12px;
+    line-height: 1.6;
+    padding: 6px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+
+  .review-quote::before { content: '"'; color: var(--accent); font-size: 16px; }
+  .review-quote::after { content: '"'; color: var(--accent); font-size: 16px; }
+
+  /* Info chips row */
+  .info-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+
+  .info-chip {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    color: var(--text2);
+  }
+
+  .info-chip.green { background: rgba(6,214,160,0.1); border-color: rgba(6,214,160,0.3); color: var(--accent3); }
+  .info-chip.red { background: rgba(255,71,87,0.1); border-color: rgba(255,71,87,0.3); color: var(--red); }
+  .info-chip.yellow { background: rgba(255,210,63,0.1); border-color: rgba(255,210,63,0.3); color: var(--accent2); }
+  .info-chip.blue { background: rgba(74,158,255,0.1); border-color: rgba(74,158,255,0.3); color: var(--blue); }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f5f5fa;
+      --surface: #ffffff;
+      --surface2: #f0f0f8;
+      --surface3: #e8e8f0;
+      --border: #dcdcec;
+      --text: #1a1a2e;
+      --text2: #4a4a6a;
+      --text3: #9090b0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="header-title">🗾 히로시마 여행 가이드</div>
+    <div class="count-badge" id="total-count">131</div>
+  </div>
+  <div class="search-wrap">
+    <input type="search" class="search-input" id="searchInput" placeholder="🔍 가게명, 메뉴, 특징 검색..." autocomplete="off">
+    <button class="search-clear" id="searchClear">✕</button>
+  </div>
+</div>
+
+<div class="filter-section">
+  <div class="filter-row" id="catFilters">
+    <button class="filter-btn active" data-cat="전체">전체 131</button>
+    <button class="filter-btn" data-cat="관광지">🏛️ 관광지</button>
+    <button class="filter-btn" data-cat="식당">🍽️ 식당</button>
+    <button class="filter-btn" data-cat="카페">☕ 카페</button>
+    <button class="filter-btn" data-cat="쇼핑">🛍️ 쇼핑</button>
+    <button class="filter-btn" data-cat="바/술집">🍺 바/술집</button>
+    <button class="filter-btn" data-cat="엔터테인먼트">🎮 엔터</button>
+    <button class="filter-btn" data-cat="교통">🚉 교통</button>
+  </div>
+</div>
+
+<div class="toolbar">
+  <select class="area-select" id="areaFilter">
+    <option value="전체">📍 전체 구역</option>
+    <option value="평화공원">평화공원</option>
+    <option value="미야지마">미야지마</option>
+    <option value="히로시마역">히로시마역</option>
+    <option value="가미야초">가미야초</option>
+    <option value="혼도리">혼도리</option>
+    <option value="혼도리/파르코">혼도리/파르코</option>
+    <option value="후쿠로마치">후쿠로마치</option>
+    <option value="긴자가이">긴자가이</option>
+    <option value="나가레카와">나가레카와</option>
+    <option value="오오테마치">오오테마치</option>
+    <option value="신텐치">신텐치</option>
+    <option value="나카마치">나카마치</option>
+    <option value="다테마치">다테마치</option>
+  </select>
+  <select class="sort-select" id="sortSelect">
+    <option value="default">순서</option>
+    <option value="rating">⭐ 평점순</option>
+    <option value="reviews">💬 리뷰순</option>
+    <option value="name">가나다순</option>
+  </select>
+  <div class="view-btns">
+    <button class="view-btn active" id="viewList" title="카드뷰">☰</button>
+    <button class="view-btn" id="viewCompact" title="컴팩트">▤</button>
+  </div>
+</div>
+
+<div class="result-info" id="resultInfo"><span id="resultCount">131</span>개 장소</div>
+
+<div id="main-screen">
+  <div class="list-container" id="listContainer"></div>
+</div>
+
+<div id="saved-screen">
+  <div class="empty-state" id="savedEmpty">
+    <div class="icon">⭐</div>
+    <p>저장한 장소가 없어요.<br>카드의 ⭐ 버튼으로 저장하세요!</p>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn active" id="navAll" onclick="showScreen('all')">
+    <span class="nav-icon">🗺️</span>전체목록
+  </button>
+  <button class="nav-btn" id="navSaved" onclick="showScreen('saved')">
+    <span class="nav-icon">⭐</span>저장됨
+  </button>
+  <button class="nav-btn" onclick="copyChecklist()">
+    <span class="nav-icon">📋</span>체크리스트
+  </button>
+</div>
+
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const RAW_DATA = [{"가게명":"원폭 돔","카테고리":"관광지","세부 카테고리":"유네스코 세계유산","체인점":"X","위치":"나카구 오오테마치 1-10","구역":"평화공원","설명/특징":"1945년 원폭 피폭에서 유일하게 남은 건물. 유네스코 세계문화유산으로 등재. 히로시마 평화기념공원 바로 옆","평점":"4.7","리뷰":"33594","대표 리뷰":"매우 역사적이고 감동적인 장소. 원자폭탄 투하의 흔적을 간직한 유일한 건물로, 인류 평화를 위한 상징입니다.","영업시간":"24시간","영업요일":"연중무휴","1인 소비 가격대":"-","대표 메뉴":"피폭 건물 외관","추천 메뉴":"야경 (야간 조명 점등)","대표사항":"세계 핵 억제의 상징적 장소","추천사항":"내부 입장 불가 (외부 관람만)","기타 정보(팁 등)":"야간 조명 점등. 강 건너편에서 보는 모습도 아름다움","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"해당없음 (무료 입장)","사전에 확인해야 할 것":"야간 조명 점등 시간 확인 (일몰 후~22:00경), 별도 확인 필요","외국어 메뉴":"해당없음","예약":"예약 불필요 (상시 개방)","면세":"해당없음 (무료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%9B%90%ED%8F%AD+%EB%8F%94/data=!4m2!3m1!1s0x355aa20cdb2780a9:0x34e6677ae0c6c096"},{"가게명":"히로시마 평화기념공원","카테고리":"관광지","세부 카테고리":"공원/기념관","체인점":"X","위치":"나카구 나카지마초 1","구역":"평화공원","설명/특징":"1945년 원폭 투하를 기념하는 세계 평화 공원. 원폭 사몰자 위령비, 평화 불꽃, 히로시마 평화기념자료관 등 포함","평점":"4.7","리뷰":"29054","대표 리뷰":"전쟁의 비극을 조용히 추모할 수 있는 평화로운 공간. 평화기념관과 함께 방문 추천. 영어 안내도 완비.","영업시간":"24시간","영업요일":"연중무휴","1인 소비 가격대":"-","대표 메뉴":"원폭 돔, 위령비, 평화의 불꽃","추천 메뉴":"평화기념자료관 관람","대표사항":"세계 평화를 상징하는 히로시마 핵심 관광지","추천사항":"자료관 관람에 2시간 이상 소요","기타 정보(팁 등)":"한국어 오디오 가이드 있음. 자료관 내부 사진 촬영 부분적 제한","꼭 방문해야 할 가게":"평화기념자료관 (히로시마 평화기념공원 내 필수 방문)","카드 사용 가능 여부":"공원 무료 / 자료관: Visa 포함 카드 가능","사전에 확인해야 할 것":"4월 18~21일 평화기념자료관 영업 여부 확인 (12/30·31 외 연중무휴이나 특별 행사 확인), 한국어 오디오 가이드 대여 가능 여부","외국어 메뉴":"한국어 오디오 가이드 있음, 자료관 한국어 안내 있음","예약":"예약 불필요 / 자료관 당일 입장 가능","면세":"해당없음","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88+%ED%8F%89%ED%99%94%EA%B8%B0%EB%85%90%EA%B3%B5%EC%9B%90/data=!4m2!3m1!1s0x355aa26d54333083:0xe129ced5b9751665"},{"가게명":"이쓰쿠시마 신사","카테고리":"관광지","세부 카테고리":"신사/세계유산","체인점":"X","위치":"하쓰카이치시 미야지마초 1-1","구역":"미야지마","설명/특징":"바다 위에 떠있는 거대한 토리이(鳥居)로 유명한 세계문화유산. 만조 시 물 위에 떠있는 느낌. 미야지마 여행의 핵심","평점":"4.6","리뷰":"34904","대표 리뷰":"물 위에 떠있는 도리이 문이 압도적으로 아름다움. 만조 시 물 위에 뜨는 모습이 최고. 사슴도 자유롭게 돌아다님.","영업시간":"06:30~18:00","영업요일":"연중무휴","1인 소비 가격대":"300~500엔(입장료)","대표 메뉴":"대 토리이(大鳥居)","추천 메뉴":"만조 시 토리이 감상, 노가쿠무대","대표사항":"일본 3경 중 하나, 유네스코 세계문화유산","추천사항":"조수 시간표 확인 필수","기타 정보(팁 등)":"조수 시간에 따라 전혀 다른 풍경. 미야지마 관광안내소에서 조수 시간 확인 가능","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (신사 입장료 현금, Visa 불가 가능성 높음)","사전에 확인해야 할 것":"⚠️ 조수 시간 필수 확인: 4/18 간조 시간, 만조 시간 / 4/19 간조·만조 / 4/20 간조·만조 / 4/21 간조·만조. https://www.data.jma.go.jp/ 또는 현지 관광안내소에서 확인. 만조 시 토리이가 물에 잠겨 '물 위 토리이' 연출, 간조 시 토리이까지 걸어갈 수 있음","외국어 메뉴":"영어 안내판 있음, 한국어 안내 일부","예약":"예약 불필요 (입장권 현장 구매)","면세":"해당없음 (입장료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%9D%B4%EC%93%B0%EC%BF%A0%EC%8B%9C%EB%A7%88+%EC%8B%A0%EC%82%AC/data=!4m2!3m1!1s0x601ae3047ec76d8f:0x357228f7d0b5d590"},{"가게명":"포켓몬센터 히로시마","카테고리":"쇼핑","세부 카테고리":"캐릭터샵","체인점":"X","위치":"미나미구 마츠바라초 1-2 ekie 2F","구역":"히로시마역","설명/특징":"포켓몬 공식 굿즈 전문 매장. 봉제인형, 피규어, 카드게임, 문구 등 포켓몬 상품 총망라","평점":"4.3","리뷰":"1398","대표 리뷰":"히로시마역 ekie 내 위치. 한산해서 여유롭게 쇼핑 가능. 히로시마 한정 굿즈(빨간 갸라도스/카프스) 판매. 면세 가능.","영업시간":"10:00~20:00","영업요일":"연중무휴","1인 소비 가격대":"구매에 따라 다름","대표 메뉴":"포켓몬 봉제인형, 피규어","추천 메뉴":"히로시마 한정 포켓몬 굿즈","대표사항":"포켓몬 공식 굿즈 전문 매장","추천사항":"히로시마 한정 상품 확인 필수","기타 정보(팁 등)":"소고 백화점 내 위치. 히로시마 한정 디자인 상품 반드시 체크","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"히로시마 한정 포켓몬 굿즈 재고 확인 (SNS·공식 사이트), 4월 특별 이벤트 여부 확인","외국어 메뉴":"영어 메뉴/안내 있음","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%ED%8F%AC%EC%BC%93%EB%AA%AC%EC%84%BC%ED%84%B0+%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88/data=!4m2!3m1!1s0x355aa20bf898f565:0xe473aa4a30832d68"},{"가게명":"마리푸 커피 로스터스 카미야초점","카테고리":"카페","세부 카테고리":"커피/식사","체인점":"X","위치":"나카구 카미야초 1-6-9 호시빌 1F","구역":"가미야초","설명/특징":"히로시마 인기 스페셜티 커피 로스터리 카페. 직접 로스팅한 원두 사용","평점":"4.7","리뷰":"1405","대표 리뷰":"빈티지 데코의 아늑한 카페. 오믈렛과 프렌치토스트가 인기. 영어 가능 스탭 있음. 모닝 세트 추천.","영업시간":"08:00~20:00","영업요일":"연중무휴","1인 소비 가격대":"700~1,500엔","대표 메뉴":"핸드드립 커피, 카페라테","추천 메뉴":"계절 한정 원두 핸드드립","대표사항":"히로시마 대표 스페셜티 커피","추천사항":"원두 구매 가능","기타 정보(팁 등)":"카미야초 전철역 근처. 원두 선물로도 인기","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"영업시간 및 휴무일 재확인 (소규모 카페, 부정기 휴무 가능)","외국어 메뉴":"영어 메뉴 있음","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료 제외)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EB%A7%88%EB%A6%AC%ED%91%B8+%EC%BB%A4%ED%94%BC+%EB%A1%9C%EC%8A%A4%ED%84%B0%EC%8A%A4+%EC%B9%B4%EB%AF%B8%EC%95%BC%EC%B4%88%EC%A0%90/data=!4m2!3m1!1s0x355aa34f37f6911b:0x2ffdb3579dd38dbf"},{"가게명":"24/7 coffee&roaster ROASTERY HIROSHIMA","카테고리":"카페","세부 카테고리":"스페셜티 커피/로스터리","체인점":"X","위치":"나카구 나카마치 1-26 1F","구역":"평화공원 인근","설명/특징":"도쿄 발 스페셜티 커피 로스터리 체인의 히로시마점. 직접 로스팅한 고품질 커피","평점":"4.4","리뷰":"161","대표 리뷰":"공원 뷰에서 즐기는 고품질 콜드브루. 크루아상 도넛과 궁합 최고. 모던하고 세련된 분위기. 픽닉&파크 세트 추천.","영업시간":"08:00~18:00","영업요일":"연중무휴","1인 소비 가격대":"700~1,200엔","대표 메뉴":"싱글오리진 핸드드립, 라테","추천 메뉴":"핸드드립 커피","대표사항":"고품질 로스터리 카페","추천사항":"원두 구매 가능","기타 정보(팁 등)":"도쿄 인기 커피 체인 히로시마점. 카페 분위기 세련됨","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"영업시간 재확인","외국어 메뉴":"영어 메뉴 있음","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료 제외)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/24%2F7+coffee%26roaster+ROASTERY+HIROSHIMA/data=!4m2!3m1!1s0x355aa3185c7a03a7:0x2a887cf49af20e4e"},{"가게명":"Obscura Coffee Roasters","카테고리":"카페","세부 카테고리":"스페셜티 커피/로스터리","체인점":"X","위치":"나카구 후쿠로마치 3-28","구역":"후쿠로마치","설명/특징":"도쿄 시모키타자와 발 유명 스페셜티 커피 로스터리 체인","평점":"4.4","리뷰":"865","대표 리뷰":"히로시마 최고 수준의 핸드드립 커피. 노트북 사용 불가. 드립백 판매도 함. SOE 에스프레소 기반.","영업시간":"09:00~19:00","영업요일":"연중무휴","1인 소비 가격대":"600~1,000엔","대표 메뉴":"싱글오리진 핸드드립","추천 메뉴":"싱글오리진 드립 커피","대표사항":"도쿄 인기 스페셜티 커피 체인 히로시마점","추천사항":"커피 마니아 추천","기타 정보(팁 등)":"원두 구매 가능. 세련된 로스터리 카페","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"부정기 휴무 있음 → 방문 전날 SNS/구글맵 영업 확인","외국어 메뉴":"영어 메뉴 있음","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료 제외)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Obscura+Coffee+Roasters/data=!4m2!3m1!1s0x355aa20e5dbde48b:0x297ff3451b726cf8"},{"가게명":"やきうお処 ハル","카테고리":"식당","세부 카테고리":"야키토리/이자카야","체인점":"X","위치":"나카구 야겐보리 2-3 센트럴게임 7블럭 1F","구역":"나가레카와","설명/특징":"생선구이 전문점. 신선한 생선을 숯불에 구워 제공. 일본 가정식 분위기","평점":"4.8","리뷰":"55","대표 리뷰":"해산물 야키토리 특화 숨은 맛집. 고등어·장어·칼치 꼬치가 압권. 일본어 메뉴만 있으나 스탭이 친절히 안내.","영업시간":"17:00~24:00","영업요일":"월~토(일 휴무)","1인 소비 가격대":"3,000~6,000엔","대표 메뉴":"계절 생선 구이","추천 메뉴":"소금구이 생선 정식","대표사항":"신선한 생선구이 전문점","추천사항":"예약 권장","기타 정보(팁 등)":"제철 생선 사용. 세토내해 신선한 생선 즐기기 좋음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 필수 (소규모 식당, Visa 불가)","사전에 확인해야 할 것":"일요일 휴무 확인 (4/19·4/20 중 일요일 해당 시 방문 불가), 예약 가능 여부 확인","외국어 메뉴":"일본어 메뉴만 (사진 메뉴 있을 수 있음)","예약":"전화 예약 권장\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%E3%82%84%E3%81%8D%E3%81%86%E3%81%8A%E5%87%A6+%E3%83%8F%E3%83%AB/data=!4m2!3m1!1s0x355aa3a34e0ec5d3:0xeade71c2f813b370"},{"가게명":"Wakakusa Coffee","카테고리":"카페","세부 카테고리":"스페셜티 커피/샌드위치","체인점":"X","위치":"나카구 하시모토초 4-5 파크시티마스 1F","구역":"히로시마시내","설명/특징":"스페셜티 커피를 취급하는 히로시마 로컬 카페","평점":"4.7","리뷰":"275","대표 리뷰":"일본 최고의 핸드드립 커피 중 하나. BLT 샌드위치도 강추. 느긋하게 기다리는 여유가 필요. 재즈 음악과 나무 인테리어.","영업시간":"08:00~17:00(월화), 10:00~17:00(금~일)","영업요일":"수·목 휴무","1인 소비 가격대":"600~1,200엔","대표 메뉴":"핸드드립 커피","추천 메뉴":"계절 한정 커피","대표사항":"스페셜티 커피 전문 카페","추천사항":"조용한 작업 카페로도 적합","기타 정보(팁 등)":"원두 구매도 가능. 핸드드립 커피 추천","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능 (확인 권장)","사전에 확인해야 할 것":"수요일 휴무 확인 (4/18·4/19 확인), 영업시간 재확인","외국어 메뉴":"영어 메뉴 있음 (확인 권장)","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료 제외)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Wakakusa+Coffee/data=!4m2!3m1!1s0x355a995c9014fdcb:0xfd04a2f59198e1ce"},{"가게명":"오코노미무라","카테고리":"식당","세부 카테고리":"오코노미야키","체인점":"X","위치":"나카구 신텐치 5-13","구역":"신텐치","설명/특징":"히로시마 오코노미야키 전문 빌딩. 2~4층에 24개 오코노미야키 가게 집결. 전후 복구기에 노점이 모여 지금의 형태로 발전","평점":"4.2","리뷰":"8541","대표 리뷰":"히로시마식 오코노미야키 빌딩. 4층에 여러 개 가게 입점. 철판 앞에서 직접 구워주는 퍼포먼스. 인기 가게는 웨이팅 있음.","영업시간":"11:00~23:00(점포마다 다름)","영업요일":"연중무휴(점포별 상이)","1인 소비 가격대":"800~1,500엔","대표 메뉴":"히로시마식 오코노미야키","추천 메뉴":"소바+돼지고기+달걀 기본 오코노미야키","대표사항":"히로시마 오코노미야키 성지","추천사항":"24개 가게 중 취향대로 선택","기타 정보(팁 등)":"2~4층에 각기 다른 가게들. 빈 자리 있는 가게로 입장. 현금 필요한 가게 많음","꼭 방문해야 할 가게":"후카야마, 간잔, 미치루 (오코노미무라 내 현지인 추천 3대 가게)","카드 사용 가능 여부":"현금 필수 (각 점포 거의 현금만, Visa 불가)","사전에 확인해야 할 것":"각 점포 영업 여부 확인 (점포별 휴무 상이), 인기 점포는 현금 준비","외국어 메뉴":"일부 점포 영어·한국어 메뉴 있음 (점포별 상이)","예약":"예약 불필요 (빈 자리 있는 점포로 입장)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%98%A4%EC%BD%94%EB%85%B8%EB%AF%B8%EB%AC%B4%EB%9D%BC/data=!4m2!3m1!1s0x355aa20f9d1e0bf3:0x13789370c4488ad6"},{"가게명":"Melange de Shuhari Hiroshima Hondori Store","카테고리":"카페","세부 카테고리":"디저트/팬케이크","체인점":"X","위치":"나카구 혼도리 8-8","구역":"혼도리","설명/특징":"히로시마 발 파르페 전문점. 계절 과일을 사용한 화려한 파르페로 유명. SNS 인기 명소","평점":"4.2","리뷰":"297","대표 리뷰":"사진 찍기 좋은 팬케이크 카페. 주말에 대기 30분 예상. 1인 1주문 정책. 마카롱도 맛있음.","영업시간":"11:00~20:00","영업요일":"연중무휴","1인 소비 가격대":"1,000~2,500엔","대표 메뉴":"계절 과일 파르페","추천 메뉴":"딸기 파르페(봄), 피치 파르페(여름)","대표사항":"히로시마 SNS 핫플 파르페 전문점","추천사항":"웨이팅 자주 발생","기타 정보(팁 등)":"계절마다 메뉴 변경. 오픈 직후나 평일 방문 추천","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"부정기 휴무 확인 (인스타그램 @melange_shuhari 확인), 봄 딸기 파르페 시즌 메뉴 확인","외국어 메뉴":"영어 메뉴 있음","예약":"예약 불가 (선착순, 웨이팅 빈번)","면세":"면세 불가 (음식·디저트)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Melange+de+Shuhari+Hiroshima+Hondori+Store/data=!4m2!3m1!1s0x355aa20c2849290b:0x425552c0ba4c4dd4"},{"가게명":"슛케이엔","카테고리":"관광지","세부 카테고리":"일본정원","체인점":"X","위치":"나카구 카미노보리초 2-11","구역":"슛케이엔","설명/특징":"1620년에 조성된 히로시마 대표 일본식 정원. 연못을 중심으로 한 회유식 정원","평점":"4.5","리뷰":"8350","대표 리뷰":"도심 속 아름다운 일본식 정원. 계절별 다른 모습. 히로시마성과 가까워 함께 방문 추천. 아침에 방문하면 한산함.","영업시간":"09:00~18:00","영업요일":"연중무휴","1인 소비 가격대":"350엔(입장료)","대표 메뉴":"회유식 일본 정원","추천 메뉴":"봄 벚꽃, 가을 단풍 시즌","대표사항":"400년 역사의 히로시마 전통 정원","추천사항":"봄·가을 시즌 강력 추천","기타 정보(팁 등)":"원폭에서 살아남은 나무들도 있어 역사적 의미 있음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"4월은 벚꽃 시즌 막바지 → 벚꽃 상태 확인 (4월 중순 이후 잎벚꽃 가능성 있음), 입장시간 09:00~17:30","외국어 메뉴":"한국어 안내 있음","예약":"예약 불필요 (현장 입장)","면세":"해당없음 (입장료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%8A%9B%EC%BC%80%EC%9D%B4%EC%97%94/data=!4m2!3m1!1s0x355a98a95866f001:0xd78420964a5d61e3"},{"가게명":"MAPS BAKERY / CAFE","카테고리":"카페","세부 카테고리":"베이커리/카페","체인점":"X","위치":"나카구 오오테마치 2-1-12 아오키빌 1F","구역":"평화공원 인근","설명/특징":"세련된 분위기의 히로시마 베이커리 카페. 빵과 커피 모두 퀄리티 높음","평점":"4.5","리뷰":"235","대표 리뷰":"아침 7시 오픈. 신선한 샌드위치와 페이스트리. 2층 이트인 공간. 와이파이 제공. 솔로 여행자에게 안성맞춤.","영업시간":"07:00~18:00","영업요일":"연중무휴","1인 소비 가격대":"600~1,500엔","대표 메뉴":"직접 만든 빵, 커피","추천 메뉴":"모닝 세트 (빵+커피)","대표사항":"인기 베이커리 카페","추천사항":"아침 식사로 추천","기타 정보(팁 등)":"일찍 방문해야 인기 빵 구매 가능","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"화요일 휴무 (4/18~21 중 화요일 해당 없음), 오픈 08:00부터 인기 빵 조기 소진 확인","외국어 메뉴":"영어 표기 있음","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료 제외)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/MAPS+BAKERY+%2F+CAFE/data=!4m2!3m1!1s0x355aa36e0643f23b:0x5b9020425b20fc2b"},{"가게명":"CRAFT BEER & SUMIBI HAREBARE","카테고리":"식당","세부 카테고리":"크래프트맥주/야키토리","체인점":"X","위치":"나카구 오오테마치 1-5-10","구역":"평화공원 인근","설명/특징":"크래프트 맥주와 숯불구이(스미비)를 조합한 독특한 컨셉의 바·레스토랑","평점":"4.0","리뷰":"172","대표 리뷰":"다양한 로컬 크래프트맥주와 숯불구이. 영어 메뉴 있음. 점심부터 운영. 어린이 동반 가능.","영업시간":"12:00~22:00","영업요일":"연중무휴","1인 소비 가격대":"1,500~3,000엔","대표 메뉴":"크래프트 맥주, 숯불구이 안주","추천 메뉴":"지역 크래프트 맥주 + 숯불구이","대표사항":"크래프트 맥주 전문 바","추천사항":"맥주 좋아하는 분께 강력 추천","기타 정보(팁 등)":"히로시마 지역 크래프트 맥주 다양하게 취급","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"월요일 휴무 확인 (4/18·4/21 해당), 영업시간 17:00~","외국어 메뉴":"영어 메뉴 있음","예약":"전화 예약 권장\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/CRAFT+BEER+%26+SUMIBI+HAREBARE/data=!4m2!3m1!1s0x355aa3bcfd7a15fd:0xe49dd0c2a2d5c992"},{"가게명":"Bagtown Coffee","카테고리":"카페","세부 카테고리":"스페셜티 커피/로스터리","체인점":"X","위치":"나카구 후쿠로마치 2-1","구역":"후쿠로마치","설명/특징":"히로시마 로컬 스페셜티 커피 카페","평점":"4.6","리뷰":"148","대표 리뷰":"히로시마 커피 마니아들의 성지. 실내 좌석 없이 외부 의자만 있음. 콜드브루가 특히 맛있음. 커피 대회 수상 이력 있음.","영업시간":"11:00~19:00","영업요일":"연중무휴","1인 소비 가격대":"600~1,200엔","대표 메뉴":"핸드드립 커피","추천 메뉴":"싱글오리진 드립","대표사항":"히로시마 스페셜티 커피 카페","추천사항":"작업하기 좋은 카페","기타 정보(팁 등)":"원두 구매도 가능","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"수요일 휴무 (4/18·4/19 확인), 영업시간 재확인","외국어 메뉴":"영어 메뉴 있음","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료 제외)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Bagtown+Coffee/data=!4m2!3m1!1s0x355aa20e563a861d:0x7231c46ede4ff336"},{"가게명":"히로시마 안데르센","카테고리":"카페","세부 카테고리":"베이커리/카페","체인점":"X","위치":"나카구 혼도리 7-1","구역":"혼도리","설명/특징":"히로시마 발 유명 베이커리 체인. 덴마크 빵 문화를 일본에 소개한 역사적인 베이커리. 혼도리 본점이 유명","평점":"4.2","리뷰":"945","대표 리뷰":"원폭에서 살아남은 역사적 건물. 빵, 디저트, 치즈 등 다양한 상품. 늘 붐비므로 아침 일찍 방문 추천.","영업시간":"10:00~19:30","영업요일":"연중무휴","1인 소비 가격대":"500~1,500엔","대표 메뉴":"크루아상, 유럽풍 빵","추천 메뉴":"갓 구운 크루아상 + 커피","대표사항":"히로시마 발 유명 베이커리 체인, 1967년 창업","추천사항":"혼도리 본점 방문 추천","기타 정보(팁 등)":"지하 빵 구매 후 위층 카페에서 식사 가능. 덴마크 문화 영향받은 빵 문화","꼭 방문해야 할 가게":"1층 베이커리 매장 + 2층 레스토랑 (별도 운영)","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"4월 봄 한정 빵 메뉴 확인, 영업시간 08:00~21:00","외국어 메뉴":"영어 표기 있음, 일부 한국어","예약":"1F 베이커리: 예약 불필요 / 2F 레스토랑: 전화 예약 가능","면세":"면세 불가 (음식·빵류)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88+%EC%95%88%EB%8D%B0%EB%A5%B4%EC%84%BC/data=!4m2!3m1!1s0x355aa20e88682c55:0xa1f87c33fef4ec"},{"가게명":"Maison Margiela Hiroshima","카테고리":"쇼핑","세부 카테고리":"명품패션/향수","체인점":"X","위치":"나카구 나카마치 2-22 히로시마죠자이빌 1F","구역":"나가레카와","설명/특징":"벨기에 명품 패션 브랜드 메종 마르지엘라 히로시마점","평점":"3.5","리뷰":"29","대표 리뷰":"메종 마르지엘라 히로시마 단독 매장. 향수가 특히 인기. 일부 스탭 친절, 일부 불친절 리뷰 혼재.","영업시간":"12:00~19:00","영업요일":"수요일 휴무","1인 소비 가격대":"고가","대표 메뉴":"마르지엘라 의류·신발·악세서리","추천 메뉴":"타비 슈즈, 시그니처 의류","대표사항":"메종 마르지엘라 공식 매장","추천사항":"명품 쇼핑","기타 정보(팁 등)":"히로시마의 럭셔리 패션 명소","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"부정기 휴무 확인, 재고 있는 아이템 사전 확인","외국어 메뉴":"영어 응대 가능","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Maison+Margiela+Hiroshima/data=!4m2!3m1!1s0x355aa211e3ffe73b:0xb0f3044193c91c07"},{"가게명":"cafe maltid","카테고리":"카페","세부 카테고리":"카페/팬케이크","체인점":"X","위치":"나카구 후쿠로마치 4-6 후쿠로마치고반칸 3F","구역":"후쿠로마치","설명/특징":"히로시마 로컬 카페 말티드. 북유럽 스타일 아늑한 분위기","평점":"4.2","리뷰":"134","대표 리뷰":"말랑한 팬케이크가 유명. 팬케이크는 14:00부터 제공. 스탭 친절. 음악과 분위기가 좋음.","영업시간":"12:00~18:00(월~목), 12:00~20:30(금~토)","영업요일":"목요일 휴무","1인 소비 가격대":"1,000~2,000엔","대표 메뉴":"커피, 케이크","추천 메뉴":"드립 커피 + 케이크 세트","대표사항":"아늑한 분위기 로컬 카페","추천사항":"관광 피로 회복에 추천","기타 정보(팁 등)":"혼도리 쇼핑 중 쉬어가기 좋음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모 카페, Visa 불가 가능성 있음)","사전에 확인해야 할 것":"화요일 휴무 확인 (4/18~21 중 화요일 없음), 영업시간 재확인","외국어 메뉴":"일본어 메뉴 위주","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/cafe+maltid/data=!4m2!3m1!1s0x355aa20e0b57bd6b:0xbcd32573c43405ec"},{"가게명":"海鮮酒場 牡蠣いかだ屋","카테고리":"식당","세부 카테고리":"해산물/굴요리/이자카야","체인점":"X","위치":"나카구 후쿠로마치 1-33 오키타빌 2F","구역":"후쿠로마치","설명/특징":"굴(카키)과 해산물을 전문으로 하는 이자카야. '이카다야'는 뗏목집이라는 의미로 독특한 컨셉","평점":"4.5","리뷰":"488","대표 리뷰":"생굴, 구운 굴, 치즈구이 굴 모두 최상급 신선도. 새우, 소바 등도 맛있음. 늦은 시간까지 영업.","영업시간":"17:00~02:00","영업요일":"월요일 휴무","1인 소비 가격대":"2,000~4,000엔","대표 메뉴":"굴 구이, 굴 찜, 굴 튀김","추천 메뉴":"굴 풀세트 + 히로시마 맥주","대표사항":"히로시마 굴 전문 이자카야","추천사항":"굴+해산물 팬 강력 추천","기타 정보(팁 등)":"히로시마 지역 굴 사용. 다양한 굴 요리법 즐기기","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능 (확인 권장)","사전에 확인해야 할 것":"부정기 휴무 확인, 4월 굴 시즌 여부 (히로시마 굴은 겨울~봄 시즌, 4월 말 시즌 종료 가능)","외국어 메뉴":"일본어 메뉴 위주 (사진 메뉴 있을 수 있음)","예약":"전화 예약 권장\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%E6%B5%B7%E9%AE%AE%E9%85%92%E5%A0%B4+%E7%89%A1%E8%A0%A3%E3%81%84%E3%81%8B%E3%81%A0%E5%B1%8B/data=!4m2!3m1!1s0x355aa3242a206e8d:0x8de02fb8cb79d30"},{"가게명":"LUCKY BAKERY","카테고리":"카페","세부 카테고리":"베이커리","체인점":"X","위치":"나카구 모토마치 5-5","구역":"모토마치/평화공원 인근","설명/특징":"히로시마 로컬 베이커리. 갓 구운 빵과 샌드위치 인기","평점":"4.6","리뷰":"324","대표 리뷰":"히로시마 최고 베이커리 중 하나. 팥도넛, 피로시키 등 독특한 빵이 가득. 여성 제빵사 8명이 운영. 평화공원 도보 거리.","영업시간":"09:30~20:00","영업요일":"연중무휴","1인 소비 가격대":"300~800엔","대표 메뉴":"갓 구운 빵류","추천 메뉴":"크림빵, 카레빵","대표사항":"로컬 베이커리","추천사항":"아침 일찍 방문 추천","기타 정보(팁 등)":"아침 식사 대용으로 방문하기 좋음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모 베이커리, Visa 불가 가능성)","사전에 확인해야 할 것":"월요일 휴무 (4/18·4/21), 07:00 오픈 아침 방문 추천","외국어 메뉴":"일본어 위주","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·빵류)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/LUCKY+BAKERY/data=!4m2!3m1!1s0x355aa342dac33b71:0xc2748b9bc8ddce16"},{"가게명":"야키가키 노 하야시","카테고리":"식당","세부 카테고리":"굴요리/해산물","체인점":"X","위치":"하쓰카이치시 미야지마초 505-1","구역":"미야지마","설명/특징":"미야지마에서 가장 유명한 구이굴(야키가키) 전문점. 현지 굴을 숯불로 구워줌. 항상 긴 대기줄","평점":"4.4","리뷰":"1999","대표 리뷰":"미야지마 최고의 굴 맛집. 굴 구이, 튀김, 생굴 등 다양하게 즐길 수 있음. 개장 전부터 줄 서기 필수. 오후 되면 굴 소진.","영업시간":"10:30~16:30","영업요일":"수요일 휴무","1인 소비 가격대":"1,500~3,000엔","대표 메뉴":"야키가키(굴구이) 5개 세트","추천 메뉴":"야키가키 세트 + 굴밥","대표사항":"미야지마 최고 인기 굴구이 전문점","추천사항":"현금만 가능. 재료 소진 조기마감 빈번","기타 정보(팁 등)":"줄이 매우 길어 11시 이전 방문 추천. 비가 와도 야외에서 대기. 현금 필수","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 필수 (Visa 불가)","사전에 확인해야 할 것":"⚠️ 목요일 정기 휴무 + 비정기 휴무 빈번 → 방문일 구글맵 영업 상태 전날 확인 필수, 현금 준비, 10:00~11:00 오픈 직후 방문 강력 권장 (줄 매우 길어짐), 4월 굴 시즌 마지막 타이밍","외국어 메뉴":"일본어 메뉴, 사진/손짓으로 주문 (간단한 메뉴)","예약":"예약 불가 (선착순, 현장 줄 서기 필수)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%95%BC%ED%82%A4%EA%B0%80%ED%82%A4+%EB%85%B8+%ED%95%98%EC%95%BC%EC%8B%9C/data=!4m2!3m1!1s0x355ab0b133abebad:0x7c98bf5d93472091"},{"가게명":"Choueccha","카테고리":"카페","세부 카테고리":"카페/식사","체인점":"X","위치":"나카구 코쿠타이지마치 1-5-1","구역":"코쿠타이지마치","설명/특징":"히로시마의 감각적인 분위기의 카페. 크레페 또는 케이크 전문","평점":"4.2","리뷰":"308","대표 리뷰":"호주 수준의 커피와 맛있는 아침식사. 영어 메뉴 있음. 크로크무슈 추천. 모닝 세트 인기.","영업시간":"09:00~18:00","영업요일":"금요일 휴무","1인 소비 가격대":"800~1,500엔","대표 메뉴":"계절 케이크, 음료","추천 메뉴":"추천 케이크 세트","대표사항":"인스타용 카페","추천사항":"소규모라 웨이팅 있음","기타 정보(팁 등)":"SNS 감성 카페. 예약 불가로 방문 시간 조절 필요","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모 카페, Visa 불가 가능성)","사전에 확인해야 할 것":"화요일 휴무 확인 (4/18~21 중 화요일 없음), 예약 불가이므로 방문 시간 조절","외국어 메뉴":"일본어 메뉴 위주","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Choueccha/data=!4m2!3m1!1s0x355aa3d6ab782c0b:0x3cada52e96223b7b"},{"가게명":"Tagashirachaho Hiroshima Kinzagai Store","카테고리":"카페","세부 카테고리":"말차카페","체인점":"X","위치":"나카구 호리카와초 5-9 와카사야빌 1F","구역":"긴자가이","설명/특징":"말차(녹차) 음료와 화과자를 즐길 수 있는 일본 전통 다실 스타일 카페","평점":"4.2","리뷰":"193","대표 리뷰":"고품질 말차 소프트아이스크림과 말차 라떼. 젠 분위기의 인테리어. 맛차 소품 판매도 함.","영업시간":"10:30~18:00(월~목), 10:30~19:00(금~토)","영업요일":"연중무휴","1인 소비 가격대":"800~1,500엔","대표 메뉴":"말차 라테, 말차 파르페","추천 메뉴":"말차 파르페, 와라비모치","대표사항":"말차 전문 카페","추천사항":"인스타 명소","기타 정보(팁 등)":"일본 전통 다과 체험 분위기. 선물용 말차 세트도 판매","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"영업시간 확인","외국어 메뉴":"영어 메뉴 있음","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Tagashirachaho+Hiroshima+Kinzagai+Store/data=!4m2!3m1!1s0x355aa205f63f153b:0xf8937f4b4cc245b3"},{"가게명":"Musimpanen","카테고리":"카페","세부 카테고리":"파티세리/케이크","체인점":"X","위치":"나카구 카나야마초 1-16","구역":"카나야마초","설명/특징":"인도네시아 발리 스타일의 감성 카페. 에스닉 인테리어와 트로피컬 음료 인기","평점":"4.4","리뷰":"540","대표 리뷰":"계절 과일을 활용한 아름다운 케이크. 강 뷰 테라스 좌석. 주말은 대기 있음. 오페라 케이크 추천.","영업시간":"10:00~19:00","영업요일":"화요일 휴무","1인 소비 가격대":"640~900엔","대표 메뉴":"트로피컬 스무디, 에스 텔레르","추천 메뉴":"인도네시아 스타일 음료","대표사항":"히로시마의 에스닉 감성 카페","추천사항":"SNS 인기 카페","기타 정보(팁 등)":"독특한 경험 원하는 분께 추천","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"수요일 휴무 (4/18·4/19 확인), 방문 전 영업 확인","외국어 메뉴":"영어 메뉴 있음","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Musimpanen/data=!4m2!3m1!1s0x355aa201228a54bb:0xbb4d1f2d88295b55"},{"가게명":"오코노미야키 나가타야","카테고리":"식당","세부 카테고리":"오코노미야키","체인점":"X","위치":"나카구 오오테마치 1-7-19 시게이시빌 1F","구역":"오오테마치","설명/특징":"히로시마식 오코노미야키 유명 맛집. 1981년 창업. 오리지널 소스 사용. 평화공원 인근으로 관광객에게 인기","평점":"4.4","리뷰":"3228","대표 리뷰":"히로시마 오코노미야키 명가. 철판 바에 앉아 굽는 모습 직접 관람. 주말 45분 웨이팅 예상. 굴버터, 새우치즈 추천.","영업시간":"11:00~20:00","영업요일":"화요일 휴무","1인 소비 가격대":"1,000~2,000엔","대표 메뉴":"나가타야키(새우+오징어+달걀)","추천 메뉴":"나가타야키","대표사항":"평화공원 인근 유명 오코노미야키 맛집","추천사항":"런치 피크타임 웨이팅 30분 이상","기타 정보(팁 등)":"오타후쿠 소스 미사용, 오리지널 소스 특징. 혼도리역에서 도보 3분","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능 (확인 권장)","사전에 확인해야 할 것":"부정기 휴무 확인, 런치 피크 피하거나 오픈 직후 방문 추천","외국어 메뉴":"영어 메뉴 있음, 한국어 일부","예약":"예약 불가 (선착순, 웨이팅 발생)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%98%A4%EC%BD%94%EB%85%B8%EB%AF%B8%EC%95%BC%ED%82%A4+%EB%82%98%EA%B0%80%ED%83%80%EC%95%BC/data=!4m2!3m1!1s0x355aa20d1ba3a539:0x54a7e2f3d14117e5"},{"가게명":"Calme","카테고리":"카페","세부 카테고리":"크레이프/팬케이크","체인점":"X","위치":"나카구 혼도리 9-19 3F","구역":"혼도리","설명/특징":"조용하고 아늑한 분위기의 히로시마 로컬 카페","평점":"4.3","리뷰":"121","대표 리뷰":"아늑한 3층 카페. 크레이프와 팬케이크가 맛있음. 누텔라 크레이프 인기. 에스프레소도 훌륭함.","영업시간":"11:30~20:00","영업요일":"연중무휴","1인 소비 가격대":"1,000~2,500엔","대표 메뉴":"드립커피, 라테","추천 메뉴":"계절 케이크 + 커피 세트","대표사항":"조용한 분위기의 로컬 카페","추천사항":"작업 및 휴식에 적합","기타 정보(팁 등)":"관광 중 쉬어가기 좋은 카페","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"화요일 휴무 (4/18~21 중 화요일 없음), 영업시간 확인","외국어 메뉴":"일본어 메뉴 위주","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Calme/data=!4m2!3m1!1s0x355aa20f05cd7493:0x2ad42737b62a4367"},{"가게명":"이치란 히로시마혼도리점","카테고리":"식당","세부 카테고리":"라멘(체인)","체인점":"O","위치":"나카구 카미야초 2-3-22 아크빌딩 M2F/2F","구역":"가미야초","설명/특징":"일본 1인석 시스템으로 유명한 하카타 돈코츠 라멘 체인. 맞춤형 주문표로 면 굵기·진하기 등 선택 가능","평점":"4.1","리뷰":"2826","대표 리뷰":"1인 칸막이 자리의 유명 라멘 체인. 24시간 운영. 맞춤형 주문 시스템. 영어 주문 가능.","영업시간":"24시간","영업요일":"연중무휴","1인 소비 가격대":"1,000~1,500엔","대표 메뉴":"이치란 라멘 (돈코츠)","추천 메뉴":"이치란 라멘 (기본)","대표사항":"1인석 라멘 원조 체인, 24시간 영업","추천사항":"한국어 주문표 있음","기타 정보(팁 등)":"한국어 주문서 있어 편리. 추가 면(카에다마) 가능. 항상 줄 있지만 회전율 빠름","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 필수 (자판기 결제, Visa 불가)","사전에 확인해야 할 것":"24시간 영업이므로 휴무 없음, 현금 준비 (자판기 결제), 피크 시간대 줄 확인","외국어 메뉴":"한국어 주문서 있음 ✅","예약":"예약 불필요 (24시간, 선착순)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%9D%B4%EC%B9%98%EB%9E%80+%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88%ED%98%BC%EB%8F%84%EB%A6%AC%EC%A0%90/data=!4m2!3m1!1s0x355aa20db54e585f:0xd22be7d6a959a381"},{"가게명":"우와사노 코노쿠시카츠 아노오뎅","카테고리":"식당","세부 카테고리":"쿠시카츠/오뎅/이자카야","체인점":"X","위치":"나카구 카나야마초 11-11","구역":"카나야마초","설명/특징":"히로시마 소문난 쿠시카츠(꼬치카츠)와 오뎅 전문점","평점":"4.8","리뷰":"201","대표 리뷰":"한국어 메뉴 있음. 오너가 한국어 공부 중. 인스타그램 DM으로 예약 가능. 새우·토마토 쿠시카츠 강추. 지쿠마·쥬욘다이 사케도 제공.","영업시간":"영업시간 미확인","영업요일":"예약 필요","1인 소비 가격대":"3,000~6,000엔","대표 메뉴":"쿠시카츠, 오뎅","추천 메뉴":"쿠시카츠 모듬 + 오뎅 세트","대표사항":"쿠시카츠+오뎅 전문 이자카야","추천사항":"현지인 인기 가게","기타 정보(팁 등)":"저렴하고 맛있는 현지 맛집","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"월요일 휴무 (4/18·4/21 방문 불가), 저녁 17:00 이후 방문","외국어 메뉴":"일본어 메뉴 위주","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%9A%B0%EC%99%80%EC%82%AC%EB%85%B8+%EC%BD%94%EB%85%B8%EC%BF%A0%EC%8B%9C%EC%B9%B4%EC%B8%A0+%EC%95%84%EB%85%B8%EC%98%A4%EB%8E%85/data=!4m2!3m1!1s0x355aa20421053007:0x716dacf0226ec131"},{"가게명":"Henkutsuya Honten","카테고리":"식당","세부 카테고리":"오코노미야키","체인점":"X","위치":"나카구 신텐치 2-8 요시오카빌 1F","구역":"신텐치","설명/특징":"히로시마 오코노미야키 노포. 본점은 히로시마식의 맛을 지키는 곳","평점":"4.0","리뷰":"336","대표 리뷰":"히로시마식 오코노미야키. 오코노미무라 바로 옆. 굴 오코노미야키 추천. 줄이 비교적 짧아 바로 입장 가능한 편.","영업시간":"11:00~22:00","영업요일":"화·수 휴무","1인 소비 가격대":"800~1,500엔","대표 메뉴":"히로시마식 오코노미야키","추천 메뉴":"소바니꾸타마(소바+고기+달걀)","대표사항":"히로시마식 오코노미야키 노포","추천사항":"정통 히로시마 맛","기타 정보(팁 등)":"히로시마 오코노미야키 맛을 제대로 느끼고 싶다면 추천","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (노포, Visa 불가 가능성)","사전에 확인해야 할 것":"화요일 휴무 (4/18~21 중 화요일 없음), 영업시간 확인","외국어 메뉴":"일본어 메뉴 위주","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Henkutsuya+Honten/data=!4m2!3m1!1s0x355aa20f7d67f4a7:0xcfb20e9b3f3c5133"},{"가게명":"テッラ·ナチュラーレ","카테고리":"카페","세부 카테고리":"베이커리/카페","체인점":"X","위치":"나카구 호리카와초 5-19","구역":"긴자가이","설명/특징":"히로시마의 이탈리안 레스토랑. 신선한 재료를 사용한 파스타와 피자","평점":"3.8","리뷰":"66","대표 리뷰":"아침 8시 오픈. 두꺼운 식빵 모닝 세트(660엔). 호박 샌드위치 강추. 2층 이트인 공간 넓고 쾌적.","영업시간":"08:00~18:00","영업요일":"연중무휴","1인 소비 가격대":"600~1,200엔","대표 메뉴":"파스타, 피자","추천 메뉴":"제철 재료 파스타","대표사항":"히로시마 이탈리안 레스토랑","추천사항":"디너 예약 추천","기타 정보(팁 등)":"히로시마 현지 재료 사용 이탈리안","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"수요일 휴무 (4/18·4/19 확인), 디너 예약 권장","외국어 메뉴":"영어 메뉴 있음","예약":"디너 전화 예약 권장\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%E3%83%86%E3%83%83%E3%83%A9%C2%B7%E3%83%8A%E3%83%81%E3%83%A5%E3%83%A9%E3%83%BC%E3%83%AC/data=!4m2!3m1!1s0x355aa3a4a6fa778f:0x6a6c9a5689512a40"},{"가게명":"Okagesan","카테고리":"식당","세부 카테고리":"카운터/해산물이자카야","체인점":"X","위치":"나카구 후쿠로마치 2-29","구역":"후쿠로마치","설명/특징":"히로시마 굴 요리 전문점. 다양한 방식으로 요리한 히로시마산 굴 제공","평점":"4.5","리뷰":"44","대표 리뷰":"부부 운영 6석짜리 카운터바. 히로시마 사케와 신선한 생선요리. 사시미 플래터 강추. 한국인 리뷰 다수 있는 숨은 맛집.","영업시간":"18:00~22:00","영업요일":"일요일 휴무","1인 소비 가격대":"3,000~6,000엔","대표 메뉴":"굴 프라이, 굴 솥밥, 굴 구이","추천 메뉴":"굴 풀코스 세트","대표사항":"히로시마 굴 요리 전문점","추천사항":"굴 팬 필수 방문","기타 정보(팁 등)":"히로시마는 일본 굴 생산량 1위. 다양한 굴 요리 비교 가능","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"화요일 휴무 확인 (4/18~21 중 화요일 없음), 예약 권장","외국어 메뉴":"영어 메뉴 있음","예약":"전화 예약 권장\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Okagesan/data=!4m2!3m1!1s0x355aa20e57c3c89d:0x2932314abf57ca6d"},{"가게명":"Step Sports Hiroshima","카테고리":"쇼핑","세부 카테고리":"스포츠용품/운동화","체인점":"X","위치":"나카구 후쿠로마치 1-24","구역":"후쿠로마치","설명/특징":"히로시마 로컬 스포츠용품점. 러닝, 트레일, 아웃도어 특화","평점":"4.1","리뷰":"100","대표 리뷰":"HOKA, 뉴발란스, 아식스 등 운동화 전문점. 영어 가능 스탭 있음. 외국인 손님에게 친절.","영업시간":"11:00~20:00","영업요일":"연중무휴","1인 소비 가격대":"구매에 따라 다름","대표 메뉴":"러닝화, 스포츠 의류","추천 메뉴":"전문 러닝화 피팅 서비스","대표사항":"전문 러닝·스포츠 용품점","추천사항":"전문 피팅 서비스 제공","기타 정보(팁 등)":"스포츠 마니아에게 추천. 전문 직원 상담 가능","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"수요일 휴무 (4/18·4/19 확인)","외국어 메뉴":"영어 응대 가능","예약":"예약 불필요","면세":"면세 가능 여부 확인 필요 (5,000엔 이상)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Step+Sports+Hiroshima/data=!4m2!3m1!1s0x355aa20e5598dd21:0xa9e9aa33a6884716"},{"가게명":"야마토야 주판점 에비스초본점","카테고리":"쇼핑","세부 카테고리":"사케/와인 전문점","체인점":"X","위치":"나카구 에비스초 4-3 야마토야빌","구역":"에비스초","설명/특징":"히로시마의 전통 주판 전문점. 수제 주판 판매. 히로시마는 일본 주판 산지","평점":"4.4","리뷰":"382","대표 리뷰":"히로시마 지역 사케 전문. 스파클링 사케 강추. 스탭 친절하고 지식이 풍부. 기념품 사케 구매 추천.","영업시간":"10:00~21:00","영업요일":"일요일 휴무","1인 소비 가격대":"구매에 따라 다름","대표 메뉴":"수제 주판 (소로반)","추천 메뉴":"미니 주판, 주판 키홀더","대표사항":"히로시마 전통 수제 주판 전문점","추천사항":"독특한 기념품으로 추천","기타 정보(팁 등)":"히로시마는 일본 최대 주판 생산지. 수제 주판은 장인 작품","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모 전문점, Visa 불가 가능성)","사전에 확인해야 할 것":"일요일 휴무 (4/19·4/20 확인), 09:00~18:00","외국어 메뉴":"일본어 위주","예약":"예약 불필요","면세":"면세 가능 여부 확인 필요 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%95%BC%EB%A7%88%ED%86%A0%EC%95%BC+%EC%A3%BC%ED%8C%90%EC%A0%90+%EC%97%90%EB%B9%84%EC%8A%A4%EC%B4%88%EB%B3%B8%EC%A0%90/data=!4m2!3m1!1s0x355aa206922d4e0d:0x33eb6df2cbfd85fd"},{"가게명":"CRESSON","카테고리":"카페","세부 카테고리":"크레이프/팬케이크","체인점":"X","위치":"나카구 혼도리 9-19 3F","구역":"혼도리","설명/특징":"히로시마 로컬 카페 겸 베이커리. 크레송(watercress)을 테마로 한 감성 카페","평점":"4.3","리뷰":"121","대표 리뷰":"혼도리 번화가 3층에 위치. 팬케이크와 크레이프 전문. 유기농 메이플 시럽 사용. 외국인 친화적.","영업시간":"11:30~20:00","영업요일":"연중무휴","1인 소비 가격대":"800~2,000엔","대표 메뉴":"커피, 크루아상","추천 메뉴":"계절 케이크 + 커피","대표사항":"감성 로컬 카페","추천사항":"SNS 인기 명소","기타 정보(팁 등)":"평화공원 근처 관광 후 들르기 좋음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"수요일 휴무 (4/18·4/19 확인), 영업시간 확인","외국어 메뉴":"영어 메뉴 있음","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/CRESSON/data=!4m2!3m1!1s0x355aa20daa270e09:0x6344050809a52de7"},{"가게명":"히로시마 역","카테고리":"교통","세부 카테고리":"기차역/쇼핑몰","체인점":"X","위치":"미나미구 마츠바라초 1-2","구역":"히로시마역","설명/특징":"히로시마의 중심 JR 기차역. 신칸센, 산요 본선 등 출발. 역 내 ekie 쇼핑몰, 버스 터미널 연결","평점":"4.1","리뷰":"3081","대표 리뷰":"신칸센 정차역. 2024년 대규모 리뉴얼 완료. ekie 쇼핑몰 내 맛집/쇼핑 풍부. 스트리트카 2층 연결.","영업시간":"24시간","영업요일":"연중무휴","1인 소비 가격대":"-","대표 메뉴":"신칸센, 재래선, 노면전차 환승","추천 메뉴":"신칸센 승차, 미야지마 방향 이동","대표사항":"히로시마 교통 허브","추천사항":"ekie 쇼핑몰 직결","기타 정보(팁 등)":"미야지마행은 산요 본선 미야지마구치역 환승. 노면전차(히로덴) 역 앞 정류장 있음","꼭 방문해야 할 가게":"ekie 쇼핑몰 (역 직결), 히로시마역 지하 상점가","카드 사용 가능 여부":"IC카드 (Suica/ICOCA) + Visa 등 교통계 카드 가능","사전에 확인해야 할 것":"미야지마행 산요 본선 시간표 사전 확인, IC카드 (Suica/ICOCA) 충전 확인","외국어 메뉴":"한국어·영어 안내 있음","예약":"해당없음","면세":"해당없음","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88+%EC%97%AD/data=!4m2!3m1!1s0x355a9f53bc20533b:0x28413f32450be7eb"},{"가게명":"애니메이트 히로시마","카테고리":"쇼핑","세부 카테고리":"애니메이션/만화/굿즈","체인점":"X","위치":"나카구 오오테마치 2-3-1","구역":"오오테마치","설명/특징":"일본 대형 애니메이션·만화 굿즈 전문점 체인. 피규어, 포스터, 게임 등 다양한 아니메 상품","평점":"4.1","리뷰":"2031","대표 리뷰":"애니 굿즈, 만화, DVD 등 다양. 코난·체인소맨 등 인기 IP 충실. 한국어 가능 스탭 있음.","영업시간":"11:00~20:00(월~금), 10:00~20:00(토~일)","영업요일":"연중무휴","1인 소비 가격대":"구매에 따라 다름","대표 메뉴":"아니메 피규어, 굿즈","추천 메뉴":"한정 발매 피규어, 성우 사인 상품","대표사항":"아니메 굿즈 전문 대형 체인점","추천사항":"한정 상품 빠른 확인 필수","기타 정보(팁 등)":"아니메 팬이라면 필수 방문. 다양한 한정 굿즈 취급","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"4월 한정 이벤트·특전 확인 (공식 사이트), 신작 굿즈 입고 일정 확인","외국어 메뉴":"일본어 위주 (상품 표기 일본어)","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%ED%8A%B8+%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88/data=!4m2!3m1!1s0x355aa20cf64ae611:0x52f3b53d0bc00d27"},{"가게명":"히로시마 성","카테고리":"관광지","세부 카테고리":"성/역사유적","체인점":"X","위치":"나카구 모토마치 21-1","구역":"히로시마성","설명/특징":"1589년 건립. 원폭으로 소실 후 1958년 재건한 모모야마 양식 성. 주변 공원 아름다움","평점":"4.2","리뷰":"17496","대표 리뷰":"일명 '잉어 성'. 성 주변 해자에 잉어 가득. 사무라이 투구 착용 체험 가능. 슛케이엔과 함께 방문 추천.","영업시간":"09:00~17:00","영업요일":"연중무휴","1인 소비 가격대":"370엔(입장료)","대표 메뉴":"천수각 (5층), 성곽과 해자","추천 메뉴":"천수각 전망대, 벚꽃 시즌 산책","대표사항":"히로시마 역사의 상징","추천사항":"봄 벚꽃 명소","기타 정보(팁 등)":"슛케이엔 정원과 함께 방문 추천. 노면전차 쉐이조마에역 하차","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"09:00~18:00, 입장료 370엔, 4월 벚꽃 잔여 여부 확인","외국어 메뉴":"한국어·영어 안내 있음","예약":"예약 불필요 (현장 입장)","면세":"해당없음 (입장료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88+%EC%84%B1/data=!4m2!3m1!1s0x355a98a6eaf7e7c3:0xf57be92cb5339632"},{"가게명":"히로시마 미술관","카테고리":"관광지","세부 카테고리":"미술관","체인점":"X","위치":"나카구 모토마치 3-2","구역":"히로시마성 인근","설명/특징":"히로시마 성 공원 내 위치한 미술관. 모네, 르누아르 등 유럽 인상파 작품 및 일본 근현대 미술 소장","평점":"4.3","리뷰":"2754","대표 리뷰":"인상파 회화 컬렉션으로 유명. 모네, 고흐, 르누아르 등 소장. 기념품샵도 알차다는 평가.","영업시간":"09:00~17:00","영업요일":"목·금 휴무","1인 소비 가격대":"1,000엔 내외(특별전 별도)","대표 메뉴":"모네, 르누아르 등 인상파 작품","추천 메뉴":"유럽 인상파 컬렉션","대표사항":"유럽 인상파 작품 소장 미술관","추천사항":"히로시마 성과 함께 방문 추천","기타 정보(팁 등)":"성 공원 내 위치로 산책과 함께 관람 가능","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"월요일 휴관 (4/18·4/21 방문 불가), 4월 특별 기획전 일정 및 요금 확인","외국어 메뉴":"영어·한국어 안내 있음","예약":"예약 불필요 (현장 입장, 특별전 제외)","면세":"해당없음 (입장료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88+%EB%AF%B8%EC%88%A0%EA%B4%80/data=!4m2!3m1!1s0x355abb7d93cf712b:0x7bfb30f86dcc7d61"},{"가게명":"UNITED ARROWS HIROSHIMA","카테고리":"쇼핑","세부 카테고리":"셀렉트샵/패션","체인점":"X","위치":"나카구 신텐치 2-2 히로시마파르코 신관 B1·1F","구역":"혼도리/파르코","설명/특징":"유나이티드 애로우즈 본선. 고급 캐주얼 및 셀렉트 브랜드 취급","평점":"3.6","리뷰":"45","대표 리뷰":"유나이티드 애로우즈 히로시마점. 파르코 신관 내. 일부 스탭 태도 불친절 리뷰 있음.","영업시간":"10:00~20:30","영업요일":"연중무휴","1인 소비 가격대":"중~고가","대표 메뉴":"셀렉트 브랜드 의류","추천 메뉴":"일본 고급 캐주얼","대표사항":"고급 캐주얼 셀렉트샵","추천사항":"일본 퀄리티 패션 쇼핑","기타 정보(팁 등)":"green label보다 상위 라인","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"영업시간 확인","외국어 메뉴":"영어 응대 가능","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/UNITED+ARROWS+HIROSHIMA/data=!4m2!3m1!1s0x355aa20f602b0b4d:0xf9c22b460dfb64f6"},{"가게명":"Montbell","카테고리":"쇼핑","세부 카테고리":"아웃도어용품","체인점":"O","위치":"나카구 카미야초 1-2-22 1·2F","구역":"가미야초","설명/특징":"일본 대표 아웃도어 브랜드 몽벨. 등산, 트레킹, 캠핑 용품 전문","평점":"4.2","리뷰":"417","대표 리뷰":"일본 아웃도어 브랜드. 넓은 매장. 면세 처리 가능. 미야지마 하이킹 전 들르기 좋은 곳.","영업시간":"10:00~20:00","영업요일":"연중무휴","1인 소비 가격대":"중~고가","대표 메뉴":"등산복, 트레킹화, 아웃도어 장비","추천 메뉴":"몽벨 경량 패딩","대표사항":"일본 대표 아웃도어 브랜드","추천사항":"아웃도어 용품 구매 추천","기타 정보(팁 등)":"한국보다 가격 저렴. 일본 한정 컬러 있음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"영업시간 확인, 봄 시즌 한정 컬러 입고 확인","외국어 메뉴":"영어 응대 가능, 영어 카탈로그 있음","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Montbell/data=!4m2!3m1!1s0x355aa2094c03c76f:0x9bfef309d55e5ed9"},{"가게명":"Bakudanya","카테고리":"식당","세부 카테고리":"냉채면/닭튀김","체인점":"X","위치":"나카구 신텐치 2-12 신텐치빌 1F 토소쿠","구역":"신텐치","설명/특징":"히로시마 인기 베이커리. 갓 구운 빵과 독특한 메뉴로 알려진 곳","평점":"3.5","리뷰":"532","대표 리뷰":"히로시마식 스파이시 냉채면(쯔케멘) 전문. 레벨2부터 매운 편. 닭튀김도 인기 메뉴. 오코노미무라 근처.","영업시간":"11:30~14:30, 17:00~21:30","영업요일":"수요일 휴무","1인 소비 가격대":"800~1,500엔","대표 메뉴":"크림빵, 갓 구운 식빵","추천 메뉴":"인기 크림빵","대표사항":"히로시마 인기 베이커리","추천사항":"아침 일찍 방문 추천","기타 정보(팁 등)":"일찍 소진되는 인기 상품 있음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모 베이커리, Visa 불가 가능성)","사전에 확인해야 할 것":"화요일 휴무 (4/18~21 중 화요일 없음), 오픈 08:00 이른 방문 추천","외국어 메뉴":"일본어 위주","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·빵류)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Bakudanya/data=!4m2!3m1!1s0x355aa20f7dd205fd:0x11a5c37181f4efc7"},{"가게명":"Sanrio Gift Gate","카테고리":"쇼핑","세부 카테고리":"캐릭터샵/산리오","체인점":"X","위치":"나카구 혼도리 5-6 야노빌 1·2F","구역":"혼도리","설명/특징":"헬로키티, 마이멜로디, 시나모롤 등 산리오 캐릭터 공식 굿즈 전문점","평점":"4.2","리뷰":"29","대표 리뷰":"산리오 공식샵. 2층 규모로 DIY 코너도 있음. 팝콘 머신이 문 앞에 있어 체험 가능.","영업시간":"11:00~20:00","영업요일":"연중무휴","1인 소비 가격대":"구매에 따라 다름","대표 메뉴":"산리오 캐릭터 굿즈","추천 메뉴":"히로시마 한정 산리오 상품","대표사항":"산리오 공식 캐릭터 전문점","추천사항":"한정 상품 확인 추천","기타 정보(팁 등)":"매 시즌 한정 상품 출시됨","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"4월 시즌 한정 산리오 굿즈 확인","외국어 메뉴":"일본어 위주 (상품 직관적)","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Sanrio+Gift+Gate/data=!4m2!3m1!1s0x355aa37c9fc08569:0x280739292ba0df0d"},{"가게명":"BAPE 히로시마점","카테고리":"쇼핑","세부 카테고리":"스트리트패션","체인점":"X","위치":"나카구 후쿠로마치 7-33","구역":"후쿠로마치","설명/특징":"일본 발 스트리트 패션 브랜드 BAPE (A Bathing Ape) 히로시마 매장","평점":"4.8","리뷰":"78","대표 리뷰":"일본 BAPE 매장 중 최고 수준의 서비스. 한산해서 여유로운 쇼핑 가능. 도쿄·오사카에 없는 재고가 있는 경우도. 직원이 사이즈 안내에 적극적.","영업시간":"11:00~19:00","영업요일":"연중무휴","1인 소비 가격대":"고가","대표 메뉴":"BAPE 의류·스니커즈","추천 메뉴":"히로시마 한정 컬래버","대표사항":"BAPE 공식 매장","추천사항":"히로시마 한정 상품 확인 추천","기타 정보(팁 등)":"스트리트 패션 브랜드 마니아 추천","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"히로시마 한정 컬래버 재고 확인 (공식 SNS)","외국어 메뉴":"영어 응대 가능","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/BAPE+%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88%EC%A0%90/data=!4m2!3m1!1s0x355aa20fa6c455f1:0xeaa4e92ece7aaea4"},{"가게명":"半地下酒場じゃけえ 広島袋町","카테고리":"식당","세부 카테고리":"이자카야","체인점":"X","위치":"나카구 후쿠로마치 1-14","구역":"후쿠로마치","설명/특징":"지하에 위치한 히로시마 분위기 이자카야. 'じゃけえ'는 히로시마 방언으로 '~니까'라는 의미","평점":"4.8","리뷰":"307","대표 리뷰":"젊은 층에게 인기 있는 반지하 이자카야. 닭튀김, 새우마요, 가니카마 등 안주 맛있음. 분위기 좋고 스탭 친절.","영업시간":"17:00~23:30","영업요일":"연중무휴","1인 소비 가격대":"2,000~4,000엔","대표 메뉴":"히로시마 향토 안주, 지역 맥주","추천 메뉴":"히로시마 지자케(지역 청주)","대표사항":"히로시마 방언 이름의 개성 있는 이자카야","추천사항":"히로시마 향토 문화 체험","기타 정보(팁 등)":"지하 공간으로 아늑한 분위기. 히로시마 방언 인테리어","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (이자카야, Visa 불가 가능성)","사전에 확인해야 할 것":"부정기 휴무 확인, 저녁 17:00~ 방문","외국어 메뉴":"일본어 메뉴 위주 (사진 메뉴 있을 수 있음)","예약":"전화 예약 권장\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%E5%8D%8A%E5%9C%B0%E4%B8%8B%E9%85%92%E5%A0%B4%E3%81%98%E3%82%83%E3%81%91%E3%81%88+%E5%BA%83%E5%B3%B6%E8%A2%8B%E7%94%BA/data=!4m2!3m1!1s0x355aa3003c742fcb:0xae1c9428ed19a6f3"},{"가게명":"A.P.C.","카테고리":"쇼핑","세부 카테고리":"프랑스패션/데님","체인점":"X","위치":"나카구 후쿠로마치 6-2","구역":"후쿠로마치","설명/특징":"프랑스 패션 브랜드 APC 히로시마 매장. 미니멀하고 심플한 스타일","평점":"4.2","리뷰":"6","대표 리뷰":"프랑스 패션 브랜드. 데님이 대표 상품. 스탭 친절하고 쇼핑 즐거움.","영업시간":"11:00~19:00(평일), 11:00~20:00(주말)","영업요일":"연중무휴","1인 소비 가격대":"고가","대표 메뉴":"APC 데님, 의류","추천 메뉴":"APC 시그니처 데님 재킷","대표사항":"프랑스 미니멀 패션 브랜드 공식 매장","추천사항":"데님 추천","기타 정보(팁 등)":"히로시마의 프랑스 브랜드 쇼핑 명소","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"부정기 휴무 확인","외국어 메뉴":"영어 응대 가능","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/A.P.C./data=!4m2!3m1!1s0x355aa20e16ed2c63:0xf818269a9911d461"},{"가게명":"ekie 히로시마","카테고리":"쇼핑","세부 카테고리":"역내 쇼핑몰/식당가","체인점":"X","위치":"미나미구 마츠바라초 1-2","구역":"히로시마역","설명/특징":"히로시마역 직결 쇼핑몰. 식당가, 카페, 기념품, 패션 브랜드 등 다양한 숍 입점","평점":"4.0","리뷰":"661","대표 리뷰":"히로시마역 직결 쇼핑몰. 오코노미야키 가게, 카페, 기념품, 포켓몬센터 등 입점. 신칸센 이용 시 들르기 좋음.","영업시간":"08:00~21:00","영업요일":"연중무휴","1인 소비 가격대":"구매에 따라 다름","대표 메뉴":"지역 기념품, 모미지만쥬","추천 메뉴":"모미지만쥬, 히로시마 한정 과자","대표사항":"히로시마역 직결 쇼핑몰","추천사항":"열차 탑승 전 마지막 쇼핑 적합","기타 정보(팁 등)":"신칸센 탑승 전 기념품 구매 최적 장소. 히로시마 한정 상품 다수","꼭 방문해야 할 가게":"1F 기념품샵, 지하 식품관, 스시 타츠 ekie (열차 탑승 전 식사)","카드 사용 가능 여부":"Visa 포함 카드 가능 (대부분 점포)","사전에 확인해야 할 것":"영업시간 10:00~21:00, 열차 탑승 전 기념품 구매 계획 세우기","외국어 메뉴":"한국어·영어 안내 있음","예약":"예약 불필요","면세":"점포별 상이 (대형 점포 5,000엔 이상 면세 가능)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/ekie+%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88/data=!4m2!3m1!1s0x355a9f6d3ecb63e7:0x75ddd9bf308f8074"},{"가게명":"プリティ伊達 (bar PRETTY date)","카테고리":"바/술집","세부 카테고리":"바","체인점":"X","위치":"나카구 호리카와초 3-10","구역":"긴자가이","설명/특징":"PRETTY 계열 바. 이름처럼 멋진 분위기의 소규모 바","평점":"4.7","리뷰":"45","대표 리뷰":"여주인 토미 씨가 운영. 영어 완벽 구사. 오리가미 체험 등 문화 교류도 가능. 외국인과 일본인이 어울리는 아늑한 바.","영업시간":"20:00~24:00","영업요일":"일요일 휴무","1인 소비 가격대":"2,000~4,000엔","대표 메뉴":"칵테일, 일본 위스키","추천 메뉴":"시즌 한정 칵테일","대표사항":"조용하고 고급스러운 분위기","추천사항":"소규모로 좌석 적음","기타 정보(팁 등)":"Bar PRETTY 시리즈. 위스키 종류 다양","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모 바, Visa 불가 가능성)","사전에 확인해야 할 것":"부정기 영업 확인 (SNS 확인), 19:00 이후 방문","외국어 메뉴":"일본어 위주 (칵테일 영어명 있음)","예약":"전화/SNS 예약 권장 (소규모)\nhttps://www.instagram.com/","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%E3%83%97%E3%83%AA%E3%83%86%E3%82%A3%E4%BC%8A%E9%81%94(bar+PRETTY+date)/data=!4m2!3m1!1s0x355aa205c2ced27b:0x11567c9af9ca71da"},{"가게명":"Izakaya Tempura&Sashimi UOTSUBAKI Fukuromachi Store","카테고리":"식당","세부 카테고리":"템푸라/사시미/이자카야","체인점":"X","위치":"나카구 후쿠로마치 2-10 나가타니카와빌 1F 102호실","구역":"후쿠로마치","설명/특징":"튀김(덴푸라)과 사시미(회)를 전문으로 하는 이자카야. 신선한 해산물 요리","평점":"4.6","리뷰":"482","대표 리뷰":"굴 최고 맛집 중 하나. 하이볼도 맛있음. 스탭이 영어로 도와줌. 야구 중계 보며 음주 가능한 서민적 분위기.","영업시간":"15:00~24:00","영업요일":"연중무휴","1인 소비 가격대":"2,000~4,000엔","대표 메뉴":"히로시마 굴 튀김, 계절 사시미","추천 메뉴":"굴 튀김 + 제철 회 세트","대표사항":"해산물 튀김+회 전문 이자카야","추천사항":"사전 예약 권장","기타 정보(팁 등)":"제철 해산물 사용. 히로시마산 굴 튀김이 명물","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능 (확인 권장)","사전에 확인해야 할 것":"예약 권장 (구글맵 또는 전화), 4월 굴 시즌 종료 여부 확인","외국어 메뉴":"영어 메뉴 있음 (확인 권장)","예약":"전화 예약 권장\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Izakaya+Tempura%26Sashimi+UOTSUBAKI+Fukuromachi+Store/data=!4m2!3m1!1s0x355aa3bb31e20443:0x8af407e2b61d8a47"},{"가게명":"나가사키도","카테고리":"카페","세부 카테고리":"양과자/케이크","체인점":"X","위치":"나카구 나카마치 3-24","구역":"나카마치","설명/특징":"히로시마의 유명한 화과자점. 레몬 케이크 등 히로시마 특산 과자 판매. 1962년 창업 노포","평점":"4.4","리뷰":"558","대표 리뷰":"히로시마 명과 버터케이크 전문점. 촉촉하고 부드러운 버터케이크가 대표 상품. 선물용으로도 인기. 1,200엔(중간 사이즈).","영업시간":"09:00~15:30","영업요일":"일요일 휴무","1인 소비 가격대":"300~1,200엔","대표 메뉴":"레몬 케이크","추천 메뉴":"히로시마 레몬 케이크, 모미지만쥬","대표사항":"히로시마 대표 레몬케이크 원조","추천사항":"기념품으로 인기","기타 정보(팁 등)":"레몬 케이크는 히로시마 기념품 1순위. 개당 약 200엔대","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"연중무휴, 레몬 케이크 봄 한정 맛 출시 여부 확인","외국어 메뉴":"한국어·영어 표기 있음","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참) ※과자류 포함","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EB%82%98%EA%B0%80%EC%82%AC%ED%82%A4%EB%8F%84/data=!4m2!3m1!1s0x355aa20e2ccf12c9:0x5f6f63ae61713271"},{"가게명":"카페 코피 발리 히로시마점","카테고리":"카페","세부 카테고리":"스페셜티 커피/발리커피","체인점":"X","위치":"나카구 노보리초 14-7 치순호텔 2F","구역":"노보리초","설명/특징":"발리 분위기의 인테리어가 특징인 감성 카페. 코코넛 음료, 아사이볼 등 이국적 메뉴","평점":"5.0","리뷰":"141","대표 리뷰":"레버식 에스프레소 머신으로 내리는 독보적인 커피. 발리 원두 특화. 오너가 직접 커피 역사 설명. 정류장 바로 앞 접근성 좋음.","영업시간":"09:00~18:00(월수~금), 09:00~21:00(토)","영업요일":"화요일 휴무","1인 소비 가격대":"1,000~1,500엔","대표 메뉴":"아사이볼, 코코넛 라테","추천 메뉴":"아사이볼 + 코코넛 음료 세트","대표사항":"발리 감성 SNS 카페","추천사항":"인스타용 사진 명소","기타 정보(팁 등)":"이국적 분위기. 서울에도 있는 체인","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"영업시간 확인","외국어 메뉴":"영어 메뉴 있음","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%B9%B4%ED%8E%98+%EC%BD%94%ED%94%BC+%EB%B0%9C%EB%A6%AC+%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88%EC%A0%90/data=!4m2!3m1!1s0x355aa3d05038056f:0x30a39afec471e3be"},{"가게명":"키디랜드","카테고리":"쇼핑","세부 카테고리":"캐릭터/장난감","체인점":"X","위치":"나카구 혼도리 10-1 파르코 본관 B1F","구역":"혼도리/파르코","설명/특징":"산리오, 디즈니, 포켓몬 등 다양한 캐릭터 상품 취급 완구 전문점","평점":"4.0","리뷰":"2","대표 리뷰":"파르코 지하 1층. 캐릭터 굿즈와 가챠 머신. 다양한 IP 상품 판매.","영업시간":"10:00~20:30","영업요일":"연중무휴","1인 소비 가격대":"구매에 따라 다름","대표 메뉴":"캐릭터 굿즈, 피규어","추천 메뉴":"히로시마 한정 캐릭터 상품","대표사항":"캐릭터 굿즈 종합 전문점","추천사항":"한정 상품 확인 필수","기타 정보(팁 등)":"혼도리 상점가 내 위치. 산리오·포켓몬 상품 특히 풍부","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"4월 한정 상품 확인","외국어 메뉴":"일본어 위주 (상품 직관적)","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%ED%82%A4%EB%94%94%EB%9E%9C%EB%93%9C/data=!4m2!3m1!1s0x355aa3000613b635:0x8e7d25088273af34"},{"가게명":"에디온 히로시마 본점 본관","카테고리":"쇼핑","세부 카테고리":"전자제품/가전","체인점":"X","위치":"나카구 카미야초 2-1-18","구역":"가미야초","설명/특징":"히로시마 최대 전자제품 양판점. 에디온은 히로시마 발 가전 체인. 7층 규모의 대형 매장. 면세 가능","평점":"4.2","리뷰":"3079","대표 리뷰":"여러 층으로 구성된 대형 전자제품 매장. 건담·애니 피규어 층도 있음. 면세 처리 가능. 스탭 친절.","영업시간":"10:00~20:00","영업요일":"연중무휴","1인 소비 가격대":"구매에 따라 다름","대표 메뉴":"가전제품, 스마트폰, 게임","추천 메뉴":"대형 가전, 면세 쇼핑","대표사항":"히로시마 최대 규모 가전 양판점","추천사항":"면세 쇼핑 가능 (5,000엔 이상)","기타 정보(팁 등)":"히로시마 발 체인. 본점답게 재고 풍부. 가미야초 전철역 바로 앞","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능 (면세 시 여권+Visa카드)","사전에 확인해야 할 것":"면세 시 여권 지참 필수, 10:00~20:00","외국어 메뉴":"한국어·영어 응대 일부 가능, 면세 안내 영어 가능","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권+Visa카드)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%97%90%EB%94%94%EC%98%A8+%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88+%EB%B3%B8%EC%A0%90+%EB%B3%B8%EA%B4%80/data=!4m2!3m1!1s0x355aa20c693aac0b:0xd8a8debd08e4260c"},{"가게명":"Yamamura chaya","카테고리":"식당","세부 카테고리":"우동/장어/카레","체인점":"X","위치":"하쓰카이치시 미야지마초 339","구역":"미야지마","설명/특징":"미야지마 섬 내의 전통 찻집. 경치를 즐기며 녹차와 화과자 즐기기 좋음","평점":"4.8","리뷰":"234","대표 리뷰":"관광 중심가에서 벗어난 가성비 맛집. 쇠고기 우동 강추. 주인 할머니 두 분이 운영. 현금 전용.","영업시간":"10:00~14:00","영업요일":"연중무휴","1인 소비 가격대":"800~2,000엔","대표 메뉴":"말차, 모미지만쥬","추천 메뉴":"말차 세트 + 미야지마 화과자","대표사항":"미야지마 전통 찻집","추천사항":"신사 관람 후 휴식 최적","기타 정보(팁 등)":"미야지마 풍경 감상하며 차 한잔. 관광 피로 회복","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (미야지마 소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"부정기 휴무 확인 (미야지마섬), 09:00~17:00","외국어 메뉴":"일본어 위주 (사진 메뉴 있음)","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Yamamura+chaya/data=!4m2!3m1!1s0x355ab0b632508c3f:0xa8279732090d7f9c"},{"가게명":"쿠시 도코로 도추","카테고리":"식당","세부 카테고리":"쿠시카츠/꼬치튀김","체인점":"X","위치":"나카구 호리카와초 7-4","구역":"긴자가이","설명/특징":"히로시마 꼬치구이 전문 이자카야. 다양한 재료의 꼬치구이 제공","평점":"4.1","리뷰":"161","대표 리뷰":"쇼와 분위기의 쿠시카츠 전문점. 10종 코스 추천. 영어 메뉴 있음. 말차 아이스크림 디저트도.","영업시간":"11:30~13:00, 17:00~22:00","영업요일":"연중무휴","1인 소비 가격대":"1,500~3,000엔","대표 메뉴":"야키토리(닭꼬치), 규탄(우설)","추천 메뉴":"특제 다레 닭꼬치","대표사항":"꼬치구이 이자카야","추천사항":"저녁 식사 겸 음주에 적합","기타 정보(팁 등)":"다양한 꼬치 부위 있음. 현지인도 많이 찾는 곳","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모 이자카야, Visa 불가 가능성)","사전에 확인해야 할 것":"월요일 휴무 (4/18·4/21 방문 불가), 저녁 방문","외국어 메뉴":"일본어 메뉴 위주","예약":"전화 예약 권장\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%BF%A0%EC%8B%9C+%EB%8F%84%EC%BD%94%EB%A1%9C+%EB%8F%84%EC%B6%94/data=!4m2!3m1!1s0x355aa2068776c04d:0xec7bb11a8b17b142"},{"가게명":"돈카츠 키쿠야","카테고리":"식당","세부 카테고리":"돈카츠","체인점":"X","위치":"나카구 텟포초 7-7","구역":"텟포초","설명/특징":"히로시마 현지인이 사랑하는 돈카츠 전문점. 바삭한 튀김옷과 두꺼운 고기로 유명","평점":"4.4","리뷰":"457","대표 리뷰":"가족 운영 소박한 돈카츠 전문점. 촉촉하고 두꺼운 고기, 바삭한 튀김옷. 영어 메뉴 있음. 현금 전용. 밥·된장국 리필 가능.","영업시간":"11:30~14:00, 18:00~21:00","영업요일":"일요일 휴무","1인 소비 가격대":"1,300~2,500엔","대표 메뉴":"로스카츠, 히레카츠","추천 메뉴":"히레카츠 정식","대표사항":"히로시마 인기 돈카츠 전문점","추천사항":"런치 피크 웨이팅 발생","기타 정보(팁 등)":"두꺼운 고기가 특징. 히로시마 현지인 단골 맛집","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (노포, Visa 불가 가능성)","사전에 확인해야 할 것":"화요일 휴무 (4/18~21 중 화요일 없음), 런치 피크 시 웨이팅 예상","외국어 메뉴":"일본어 메뉴 위주 (사진 메뉴 있음)","예약":"예약 불가 (선착순, 웨이팅 발생)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EB%8F%88%EC%B9%B4%EC%B8%A0+%ED%82%A4%EC%BF%A0%EC%95%BC/data=!4m2!3m1!1s0x355aa207a992bd37:0x5007484639fbc99c"},{"가게명":"히로시마 로프트","카테고리":"쇼핑","세부 카테고리":"잡화/문구/생활용품","체인점":"X","위치":"나카구 모토마치 6-27 아쿠아히로시마 5F","구역":"모토마치","설명/특징":"일본 대형 생활잡화 전문 체인. 문구, 인테리어, 화장품, 여행용품 등 폭넓게 취급","평점":"3.9","리뷰":"452","대표 리뷰":"아쿠아히로시마 5층. 다양한 문구, 잡화, 생활용품. 1층 면세 카운터에서 면세 처리 가능.","영업시간":"10:00~19:30","영업요일":"연중무휴","1인 소비 가격대":"구매에 따라 다름","대표 메뉴":"문구류, 생활잡화","추천 메뉴":"일본 한정 문구, 홈데코","대표사항":"대형 생활잡화 체인점","추천사항":"면세 가능 (5,000엔 이상)","기타 정보(팁 등)":"문구 마니아라면 꼭 방문. 로프트 한정 상품 있음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"면세 가능 (5,000엔 이상), 영업시간 확인","외국어 메뉴":"영어 표기 있음","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88+%EB%A1%9C%ED%94%84%ED%8A%B8/data=!4m2!3m1!1s0x355aa20bf7e90855:0xd830c71af5dffcab"},{"가게명":"とんかつ16","카테고리":"식당","세부 카테고리":"돈카츠","체인점":"X","위치":"나카구 나가레카와초 5-19 카사블랑카빌 1F","구역":"나가레카와","설명/특징":"히로시마의 돈카츠 전문점. 숫자 16이 인상적인 간판","평점":"4.8","리뷰":"260","대표 리뷰":"히로시마 최고의 돈카츠. 16년 이상의 숙련된 오너 셰프. 고기 종류와 부위 상세 설명. 인스타그램으로 예약 가능. 반드시 방문해야 할 돈카츠집.","영업시간":"11:30~14:00, 17:30~20:00","영업요일":"월·화 휴무","1인 소비 가격대":"1,500~3,500엔","대표 메뉴":"로스카츠 정식","추천 메뉴":"히레카츠 정식","대표사항":"히로시마 돈카츠 전문점","추천사항":"정식 세트가 가성비 좋음","기타 정보(팁 등)":"밥, 미소된장국, 반찬 포함 정식 추천","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"수요일 휴무 (4/18·4/19 확인)","외국어 메뉴":"일본어 메뉴 위주","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%E3%81%A8%E3%82%93%E3%81%8B%E3%81%A416/data=!4m2!3m1!1s0x355aa374642bc453:0xd9c2b0175c5e04bc"},{"가게명":"야마다 주판점 핫초보리점","카테고리":"쇼핑","세부 카테고리":"사케/와인 전문점","체인점":"X","위치":"나카구 호리카와초 5-1","구역":"긴자가이","설명/특징":"히로시마 주판 전문점 핫초보리 지점","평점":"4.4","리뷰":"140","대표 리뷰":"히로시마 주변 희귀 사케 전문. 스탠딩 바 코너에서 시음 가능. 히로시마 진도 판매. 계절 안주와 함께 즐길 수 있음.","영업시간":"11:00~19:30","영업요일":"연중무휴","1인 소비 가격대":"구매에 따라 다름","대표 메뉴":"수제 주판","추천 메뉴":"미니 주판","대표사항":"히로시마 주판 전문점","추천사항":"독특한 기념품","기타 정보(팁 등)":"히로시마 주판 문화 체험","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"일요일 휴무 (4/19·4/20 확인)","외국어 메뉴":"일본어 위주","예약":"예약 불필요","면세":"면세 가능 여부 확인 필요","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%95%BC%EB%A7%88%EB%8B%A4+%EC%A3%BC%ED%8C%90%EC%A0%90+%ED%95%AB%EC%B4%88%EB%B3%B4%EB%A6%AC%EC%A0%90/data=!4m2!3m1!1s0x355aa39b5a84f051:0x423b7ae532375e2a"},{"가게명":"個室焼肉 喰切じろう 袋町店","카테고리":"식당","세부 카테고리":"야키니쿠/와규","체인점":"X","위치":"나카구 후쿠로마치 4-35","구역":"후쿠로마치","설명/특징":"개인실(개실) 야키니쿠 전문점. 프라이빗한 분위기에서 야키니쿠 즐기기 가능","평점":"4.6","리뷰":"1121","대표 리뷰":"와규 스시, 카루비 생와규 유케, 기무치 조합이 절정. 개인 룸 완비. 외국인도 자주 찾는 고급 야키니쿠.","영업시간":"11:30~15:00, 17:00~24:00","영업요일":"연중무휴","1인 소비 가격대":"3,000~6,000엔","대표 메뉴":"와규 모둠, 개인실 야키니쿠","추천 메뉴":"흑모와규 모둠 세트","대표사항":"프라이빗 개인실 야키니쿠","추천사항":"예약 필수","기타 정보(팁 등)":"커플·소그룹 식사에 적합. 예약 필수","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"예약 필수 (구글맵 또는 전화 예약, 한국어 불가 가능성 높음 → 영어 또는 번역 앱 활용)","외국어 메뉴":"영어 메뉴 있음 (확인 권장)","예약":"예약 필수\n▶ 구글맵 예약: https://www.google.com/maps/search/個室焼肉+喰切じろう+袋町\n▶ 전화 예약 (번역앱 활용)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%E5%80%8B%E5%AE%A4%E7%84%BC%E8%82%89+%E5%96%B0%E5%88%87%E3%81%98%E3%82%8D%E3%81%86+%E8%A2%8B%E7%94%BA%E5%BA%97/data=!4m2!3m1!1s0x355aa30067c84259:0x9a277e974d31edfb"},{"가게명":"지라 스미노야","카테고리":"식당","세부 카테고리":"야키니쿠/무한리필","체인점":"X","위치":"나카구 후쿠로마치 6-3 지라빌 3F","구역":"후쿠로마치","설명/특징":"히로시마 숯불구이 전문 이자카야","평점":"3.5","리뷰":"172","대표 리뷰":"가성비 야키니쿠 무한리필(2,480엔). 태블릿 주문으로 한국어 지원. 현금 전용. 오픈 시간에 맞춰 가면 대기 없음.","영업시간":"17:00~24:00","영업요일":"연중무휴","1인 소비 가격대":"2,480엔(무제한)","대표 메뉴":"숯불구이 안주, 지역 생선","추천 메뉴":"숯불 생선구이 + 지자케","대표사항":"숯불구이 전문 이자카야","추천사항":"저녁 식사 추천","기타 정보(팁 등)":"히로시마 지역 재료 사용","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"부정기 휴무 확인, 저녁 방문","외국어 메뉴":"일본어 메뉴 위주","예약":"전화 예약 권장\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%A7%80%EB%9D%BC+%EC%8A%A4%EB%AF%B8%EB%85%B8%EC%95%BC/data=!4m2!3m1!1s0x355aa20e455937b5:0x2b1f29ac978a62d4"},{"가게명":"가챠왕국 히로시마점","카테고리":"쇼핑","세부 카테고리":"가챠(캡슐토이)","체인점":"X","위치":"나카구 오오테마치 1-8-17 키사다빌 2F","구역":"오오테마치","설명/특징":"수백 종의 가챠가챠(캡슐 자판기) 전문 매장. 아니메·게임·캐릭터 굿즈 가챠 가득","평점":"4.1","리뷰":"59","대표 리뷰":"음악 상점 위 2층에 위치. 다양한 최신 가챠 머신. 스탭 친절. 엘리베이터 이용 가능.","영업시간":"11:00~19:00","영업요일":"연중무휴","1인 소비 가격대":"200~500엔/회","대표 메뉴":"캐릭터 가챠, 애니메 굿즈 가챠","추천 메뉴":"한정 캐릭터 가챠","대표사항":"가챠가챠 전문 대형 매장","추천사항":"한정 가챠 확인 필수","기타 정보(팁 등)":"수백 종의 가챠 보유. 소액 기념품으로 인기","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 필수 (가챠 자판기 현금만, Visa 불가)","사전에 확인해야 할 것":"현금 준비 (가챠 자판기 현금만), 인기 가챠 재고 확인","외국어 메뉴":"일본어 위주 (그림으로 확인 가능)","예약":"예약 불필요","면세":"면세 불가 (소액 상품)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EA%B0%80%EC%B1%A0%EC%99%95%EA%B5%AD+%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88%EC%A0%90/data=!4m2!3m1!1s0x355aa30819fc309d:0xca3cbfc36d27b9bf"},{"가게명":"쿠니마츠 본점","카테고리":"식당","세부 카테고리":"라멘","체인점":"X","위치":"나카구 핫초보리 8-10","구역":"핫초보리","설명/특징":"히로시마 라멘의 원조 격 노포. 히로시마 라멘은 돈코츠+간장베이스의 중간 느낌","평점":"4.2","리뷰":"1218","대표 리뷰":"히로시마 로컬 라멘. 영어 주문기 있어 편리. 스파이시 라멘 레벨 조절 가능. 가성비 뛰어남.","영업시간":"11:00~15:00, 17:00~20:00","영업요일":"일요일 휴무","1인 소비 가격대":"700~1,200엔","대표 메뉴":"히로시마 라멘","추천 메뉴":"히로시마 라멘 기본","대표사항":"히로시마 라멘 원조 노포","추천사항":"히로시마 라멘 필수 체험","기타 정보(팁 등)":"히로시마 라멘은 돈코츠+간장 스프. 이치란과는 다른 맛","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (노포, Visa 불가 가능성)","사전에 확인해야 할 것":"화요일 휴무 (4/18~21 중 화요일 없음), 11:00~20:00","외국어 메뉴":"일본어 메뉴 위주","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%BF%A0%EB%8B%88%EB%A7%88%EC%B8%A0+%EB%B3%B8%EC%A0%90/data=!4m2!3m1!1s0x355aa20888196a53:0xa941df4f1fc23e9e"},{"가게명":"미야지마구치 역","카테고리":"교통","세부 카테고리":"JR역/페리 터미널","체인점":"X","위치":"하쓰카이치시 미야지마구치 1-3-23","구역":"미야지마구치","설명/특징":"미야지마섬으로 가는 페리를 타기 위한 환승역. JR 히로시마역에서 산요 본선으로 약 25분 소요","평점":"4.0","리뷰":"518","대표 리뷰":"미야지마 페리 터미널까지 도보 3분. 히로시마역에서 JR 산요선으로 약 30분. 화장실 완비.","영업시간":"24시간","영업요일":"연중무휴","1인 소비 가격대":"-","대표 메뉴":"미야지마행 페리 환승","추천 메뉴":"JR 패스로 페리까지 무료 탑승 가능","대표사항":"미야지마 관광 출발점","추천사항":"JR 패스 소지자는 JR 운영 페리 무료","기타 정보(팁 등)":"히로덴(노면전차)으로도 이동 가능 (1시간 이상 소요). JR이 빠름","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"IC카드 / 현금 (Visa 직접 결제 불가)","사전에 확인해야 할 것":"⚠️ JR 패스 소지자는 JR 운영 페리 무료 탑승 가능 확인, 히로시마역→미야지마구치 산요 본선 소요시간 약 25분, 시간표 사전 확인","외국어 메뉴":"한국어·영어 안내 있음","예약":"해당없음","면세":"해당없음","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EB%AF%B8%EC%95%BC%EC%A7%80%EB%A7%88%EA%B5%AC%EC%B9%98+%EC%97%AD/data=!4m2!3m1!1s0x355ab75ae1044a65:0xe0a7fcf087db103"},{"가게명":"Reception 広島店 bigamericanshop","카테고리":"쇼핑","세부 카테고리":"셀렉트샵/데님","체인점":"X","위치":"나카구 미카와초 3-16","구역":"나가레카와","설명/특징":"미국 빈티지 의류 및 아메리칸 캐주얼 전문점","평점":"4.0","리뷰":"23","대표 리뷰":"RESOLUTE 청바지를 히로시마에서 유일하게 취급. 다양한 단색 아이템 보유. 스탭 친절하고 조언 아낌없음.","영업시간":"11:00~20:00","영업요일":"연중무휴","1인 소비 가격대":"중~고가","대표 메뉴":"미국 빈티지 의류","추천 메뉴":"빈티지 USA 제품","대표사항":"미국 빈티지 의류 전문점","추천사항":"아메카지 스타일 추구하는 분께 추천","기타 정보(팁 등)":"히로시마 패션 씬의 아메카지 계열","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능 (확인 권장)","사전에 확인해야 할 것":"부정기 휴무 확인","외국어 메뉴":"영어 응대 가능","예약":"예약 불필요","면세":"면세 가능 여부 확인 필요","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Reception+%E5%BA%83%E5%B3%B6%E5%BA%97+bigamericanshop/data=!4m2!3m1!1s0x355aa20f9821c107:0xa3b3fc5d6fbb71cd"},{"가게명":"無印良品 広島パルコ","카테고리":"쇼핑","세부 카테고리":"라이프스타일/의류","체인점":"X","위치":"나카구 신텐치 2-1 파르코 신관 7~8F","구역":"혼도리/파르코","설명/특징":"일본 대표 라이프스타일 브랜드 무지(MUJI). 의류, 식품, 문구, 인테리어 등 심플하고 자연친화적 제품","평점":"3.9","리뷰":"445","대표 리뷰":"파르코 신관 7~8층. 대형 무지루시 매장. 영어 가능 스탭. 의류, 가구, 식품 등 다양.","영업시간":"10:00~20:30","영업요일":"연중무휴","1인 소비 가격대":"중간","대표 메뉴":"의류, 생활잡화, 문구","추천 메뉴":"일본 한정 식품, 무지 원피스","대표사항":"무인양품 파르코점","추천사항":"일본 한정 식품 구매 추천","기타 정보(팁 등)":"한국보다 가격 저렴. 식품관 한정 상품 확인","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"영업시간 확인 (파르코 영업시간 따름)","외국어 메뉴":"영어·한국어 표기 있음","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참) ※식품 제외","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%E7%84%A1%E5%8D%B0%E8%89%AF%E5%93%81+%E5%BA%83%E5%B3%B6%E3%83%91%E3%83%AB%E3%82%B3/data=!4m2!3m1!1s0x355aa20f602b0b4d:0x35268a26378631d4"},{"가게명":"Momiji-so","카테고리":"식당","세부 카테고리":"우동/오뎅/카레","체인점":"X","위치":"하쓰카이치시 미야지마초 미나미노마치","구역":"미야지마","설명/특징":"미야지마섬 내 찻집·카페. 일본 전통 분위기에서 차와 모미지만쥬 즐기기","평점":"4.7","리뷰":"163","대표 리뷰":"미야지마 미센 하산 후 들르기 좋은 식당. 굴 카레우동, 두부 우동 추천. 친절한 노부부 운영. 테라스 자리에서 사슴 관람.","영업시간":"10:00~16:00","영업요일":"연중무휴","1인 소비 가격대":"800~2,000엔","대표 메뉴":"말차, 모미지만쥬","추천 메뉴":"말차+모미지만쥬 세트","대표사항":"미야지마 전통 찻집","추천사항":"관광 중 휴식 명소","기타 정보(팁 등)":"미야지마섬 내 아늑한 쉼터","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"부정기 휴무 확인 (미야지마섬)","외국어 메뉴":"일본어 위주 (사진 메뉴 있음)","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Momiji-so/data=!4m2!3m1!1s0x355ab0b786be10a5:0x6a15feba43a9e458"},{"가게명":"잇푸도 히로시마후쿠로마치점","카테고리":"식당","세부 카테고리":"라멘(체인)","체인점":"O","위치":"나카구 후쿠로마치 2-2 가이에이후쿠로마치빌 1F","구역":"후쿠로마치","설명/특징":"후쿠오카 발 유명 돈코츠 라멘 체인 잇푸도(一風堂)의 히로시마 후쿠로마치점","평점":"4.2","리뷰":"1223","대표 리뷰":"유명 하카타 라멘 체인. 시로마루 라멘 인기. 태블릿으로 영어 주문 가능. 교자도 추천.","영업시간":"11:00~23:00","영업요일":"연중무휴","1인 소비 가격대":"900~1,500엔","대표 메뉴":"시로마루 모토아지, 아카마루 신아지","추천 메뉴":"카라쿠라멘(매운 라멘)","대표사항":"하카타 돈코츠 라멘 유명 체인점","추천사항":"이치란과 비교 체험 추천","기타 정보(팁 등)":"매운 맛 조절 가능. 교자(군만두) 세트 추천","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"연중무휴, 영업시간 11:00~23:00","외국어 메뉴":"영어 메뉴 있음","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%9E%87%ED%91%B8%EB%8F%84+%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88%ED%9B%84%EC%BF%A0%EB%A1%9C%EB%A7%88%EC%B9%98%EC%A0%90/data=!4m2!3m1!1s0x355aa20e57b1b331:0x70ae808138f8f734"},{"가게명":"UNITED ARROWS green label relaxing hiroshima parco","카테고리":"쇼핑","세부 카테고리":"패션","체인점":"X","위치":"나카구 신텐치 2-2 파르코 신관 4F","구역":"혼도리/파르코","설명/특징":"유나이티드 애로우즈의 캐주얼 라인. 자연스럽고 세련된 일상복 스타일","평점":"3.9","리뷰":"69","대표 리뷰":"유나이티드 애로우즈 그린라벨. 파르코 신관 4층. 캐주얼 스타일.","영업시간":"파르코 영업시간 동일","영업요일":"연중무휴","1인 소비 가격대":"중간","대표 메뉴":"캐주얼 의류, 악세서리","추천 메뉴":"자연스러운 일상복","대표사항":"UA 캐주얼 라인","추천사항":"파르코 내 위치","기타 정보(팁 등)":"스마트 캐주얼 스타일 추구하는 분께 추천","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"영업시간 확인 (파르코 영업시간 따름)","외국어 메뉴":"영어 응대 가능","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/UNITED+ARROWS+green+label+relaxing+hiroshima+parco/data=!4m2!3m1!1s0x355aa2058a8e29bb:0x74d876d966baa417"},{"가게명":"Imamuraya Yokohama Iekei Ramen Tatemachi Branch","카테고리":"식당","세부 카테고리":"라멘(이에케이)","체인점":"X","위치":"나카구 다테마치 6-13","구역":"다테마치","설명/특징":"요코하마 이에케이 스타일 라멘 전문점. 돈코츠+간장의 진한 스프에 두꺼운 면","평점":"4.5","리뷰":"459","대표 리뷰":"히로시마 최고의 이에케이 라멘. 진한 돈코츠 간장 육수. 탁월한 감칠맛. 교자도 추천. 생맥주 150엔의 가성비.","영업시간":"11:30~23:00","영업요일":"연중무휴","1인 소비 가격대":"900~1,500엔","대표 메뉴":"이에케이 라멘","추천 메뉴":"요코하마 이에케이 라멘","대표사항":"이에케이 라멘 전문점","추천사항":"진한 맛 선호하는 분께 추천","기타 정보(팁 등)":"스프 진하기, 면 굵기, 차슈 기름 양 선택 가능","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능 (확인 권장)","사전에 확인해야 할 것":"부정기 휴무 확인","외국어 메뉴":"영어 메뉴 있음","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Imamuraya+Yokohama+Iekei+Ramen+Tatemachi+Branch/data=!4m2!3m1!1s0x355aa38f49ad1b03:0xc85b3192e495c063"},{"가게명":"Country Cat","카테고리":"쇼핑","세부 카테고리":"고양이 잡화/선물","체인점":"X","위치":"나카구 오오테마치 1-5-11","구역":"오오테마치","설명/특징":"고양이를 테마로 한 카페거나 편안한 분위기의 히로시마 로컬 카페","평점":"4.7","리뷰":"110","대표 리뷰":"고양이 테마 잡화 가게. 세계 어디서도 보기 힘든 독특한 아이템. 도자기, 앞치마, 문어 머리핀 등 개성 넘치는 상품.","영업시간":"10:30~19:00","영업요일":"목요일 휴무","1인 소비 가격대":"구매에 따라 다름","대표 메뉴":"커피, 케이크","추천 메뉴":"계절 케이크 + 커피","대표사항":"아늑한 분위기 로컬 카페","추천사항":"관광 중 휴식 명소","기타 정보(팁 등)":"조용하게 쉬어가기 좋은 카페","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"화요일 휴무 (4/18~21 중 화요일 없음)","외국어 메뉴":"일본어 위주","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Country+Cat/data=!4m2!3m1!1s0x355aa20c54eba913:0xdfc168fe07d55927"},{"가게명":"鳥太郎 並木店","카테고리":"식당","세부 카테고리":"야키토리","체인점":"X","위치":"나카구 나카마치 1-7","구역":"나카마치","설명/특징":"히로시마 로컬 야키토리 이자카야 나미키점","평점":"4.2","리뷰":"62","대표 리뷰":"여성 스탭만으로 운영. 모든 야키토리 섬세하게 굽고 맛이 일품. 영어 메뉴 있음. 히로시마 카프스 야구 중계 있음.","영업시간":"17:00~23:00","영업요일":"일요일 휴무","1인 소비 가격대":"1,500~3,000엔","대표 메뉴":"야키토리 모듬","추천 메뉴":"특제 다레 야키토리","대표사항":"히로시마 로컬 야키토리 이자카야","추천사항":"현지인 단골 가게","기타 정보(팁 등)":"저녁 음주에 적합","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"월요일 휴무 (4/18·4/21 방문 불가), 저녁 방문","외국어 메뉴":"일본어 메뉴 위주","예약":"전화 예약 권장\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%E9%B3%A5%E5%A4%AA%E9%83%8E+%E4%B8%A6%E6%9C%A8%E5%BA%97/data=!4m2!3m1!1s0x355aa20fce7be083:0xdc8f3165f8b0a614"},{"가게명":"Shirakawa","카테고리":"바/술집","세부 카테고리":"바","체인점":"X","위치":"나카구","구역":"히로시마 시내","설명/특징":"히로시마 로컬 라멘집 또는 정식 식당","평점":"4.0","리뷰":"0","대표 리뷰":"확인 필요","영업시간":"확인 필요","영업요일":"확인 필요","1인 소비 가격대":"확인 필요","대표 메뉴":"라멘, 정식","추천 메뉴":"정식 세트","대표사항":"히로시마 로컬 식당","추천사항":"간단한 식사에 적합","기타 정보(팁 등)":"현지인 이용 많은 일상 식당","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"수요일 휴무 (4/18·4/19 확인)","외국어 메뉴":"일본어 위주","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Shirakawa/data=!4m2!3m1!1s0x355aa20e49028aa7:0xd73d03d2b16cbac7"},{"가게명":"우오토라","카테고리":"식당","세부 카테고리":"해산물/이자카야(스탠딩바)","체인점":"X","위치":"나카구 후쿠로마치 5-4 아베빌 1F","구역":"후쿠로마치","설명/특징":"신선한 해산물을 중심으로 한 이자카야","평점":"4.3","리뷰":"382","대표 리뷰":"신선한 회와 튀김이 가성비 최고. 오마카세 사시미 2번 주문할 만큼 맛있음. 현금 전용. 오후 5:30에 도착하면 10분 대기.","영업시간":"17:00~23:00","영업요일":"일요일 휴무","1인 소비 가격대":"2,000~3,500엔","대표 메뉴":"제철 해산물 안주","추천 메뉴":"굴, 새우, 조개 등 해산물 안주","대표사항":"해산물 이자카야","추천사항":"저녁 식사 및 음주에 적합","기타 정보(팁 등)":"세토내해 신선한 해산물","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"월요일 휴무 (4/18·4/21 방문 불가)","외국어 메뉴":"일본어 메뉴 위주","예약":"전화 예약 권장\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%9A%B0%EC%98%A4%ED%86%A0%EB%9D%BC/data=!4m2!3m1!1s0x355aa20e064a0df9:0x654c1bfeeed8c5d1"},{"가게명":"유니클로 가미야초 선몰점","카테고리":"쇼핑","세부 카테고리":"SPA패션","체인점":"O","위치":"나카구 카미야초 2-2-18","구역":"가미야초","설명/특징":"일본 대표 패스트패션 체인 유니클로 가미야초 선몰점. 베이식 의류 및 히트텍, 에어리즘 등","평점":"4.0","리뷰":"563","대표 리뷰":"선몰 내 유니클로. 비교적 한산해서 여유롭게 쇼핑 가능. 면세 처리 가능. 아동복 선택지 한정.","영업시간":"10:30~20:00","영업요일":"연중무휴","1인 소비 가격대":"저~중간","대표 메뉴":"히트텍, 에어리즘, 플리스","추천 메뉴":"히트텍, 에어리즘","대표사항":"대형 유니클로 매장","추천사항":"면세 가능 (5,000엔 이상)","기타 정보(팁 등)":"한국 가격보다 저렴. GU 매장과 함께 방문 추천","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"연중무휴, 면세 가능","외국어 메뉴":"영어 표기 있음, 한국어 응대 일부","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%9C%A0%EB%8B%88%ED%81%B4%EB%A1%9C+%EA%B0%80%EB%AF%B8%EC%95%BC%EC%B4%88+%EC%84%A0%EB%AA%B0%EC%A0%90/data=!4m2!3m1!1s0x355aa20c481e6493:0x469a5a21a0f0c49a"},{"가게명":"BEAMS HIROSHIMA","카테고리":"쇼핑","세부 카테고리":"셀렉트샵/패션","체인점":"X","위치":"나카구 혼도리 3-10 사잔 1·2F","구역":"혼도리","설명/특징":"일본 인기 셀렉트샵 빔스(BEAMS) 히로시마점. 국내외 브랜드 큐레이션 패션","평점":"3.8","리뷰":"189","대표 리뷰":"빔즈 히로시마점. 스탭 친절하고 코디 조언 아낌없음. 빔즈 콜라보 아이템도 취급.","영업시간":"11:00~20:00","영업요일":"연중무휴","1인 소비 가격대":"중~고가","대표 메뉴":"셀렉트 브랜드 의류·잡화","추천 메뉴":"빔스 한정 컬래버 아이템","대표사항":"일본 인기 셀렉트샵 체인","추천사항":"다양한 브랜드 큐레이션","기타 정보(팁 등)":"스트리트~캐주얼까지 폭넓은 스타일","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"부정기 휴무 확인","외국어 메뉴":"영어 응대 가능","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/BEAMS+HIROSHIMA/data=!4m2!3m1!1s0x355aa20f1e1f1bcd:0xfdbdfed8beae5bac"},{"가게명":"The North Face","카테고리":"쇼핑","세부 카테고리":"아웃도어/패션","체인점":"X","위치":"나카구 후쿠로마치 8-18","구역":"후쿠로마치","설명/특징":"글로벌 아웃도어 브랜드 노스페이스 히로시마 매장","평점":"4.1","리뷰":"70","대표 리뷰":"노스페이스 히로시마점. 퍼플 라벨(프리미엄 라인) 취급. 스탭 친절.","영업시간":"11:00~19:00","영업요일":"연중무휴","1인 소비 가격대":"고가","대표 메뉴":"아웃도어 의류·장비","추천 메뉴":"일본 한정 컬러 다운재킷","대표사항":"노스페이스 공식 매장","추천사항":"일본 한정 상품 확인 추천","기타 정보(팁 등)":"일본 한정 컬러·디자인 있음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"연중무휴, 봄 시즌 신상 입고 확인","외국어 메뉴":"영어 응대 가능","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/The+North+Face/data=!4m2!3m1!1s0x355aa20faaed6467:0x16483f6649a7ae3b"},{"가게명":"ref","카테고리":"쇼핑","세부 카테고리":"셀렉트샵","체인점":"X","위치":"나카구 후쿠로마치 8-18","구역":"후쿠로마치","설명/특징":"히로시마 빈티지·중고 의류 전문점","평점":"4.3","리뷰":"35","대표 리뷰":"큐레이션이 훌륭한 셀렉트샵. 도쿄·오사카에서 품절된 아이템 찾을 수 있음. 소규모지만 알찬 구성.","영업시간":"11:00~19:00","영업요일":"연중무휴","1인 소비 가격대":"중~고가","대표 메뉴":"빈티지 의류","추천 메뉴":"고품질 중고 의류","대표사항":"빈티지 의류 전문점","추천사항":"보물 찾기 재미","기타 정보(팁 등)":"히로시마 빈티지 씬","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"부정기 휴무 확인","외국어 메뉴":"일본어 위주","예약":"예약 불필요","면세":"면세 불가 (중고품)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/ref/data=!4m2!3m1!1s0x355aa20e4c50c773:0x3fc0b0a73021abe4"},{"가게명":"pencil","카테고리":"쇼핑","세부 카테고리":"인테리어/도자기/잡화","체인점":"X","위치":"나카구 후쿠로마치 7-21","구역":"후쿠로마치","설명/특징":"히로시마 로컬 패션·라이프스타일 셀렉트샵","평점":"4.2","리뷰":"64","대표 리뷰":"스칸디나비안 빈티지 가구와 유럽 도자기 전문. 히로시마 최고 인테리어샵이라는 평가. 선물 포장도 예쁨.","영업시간":"11:00~19:00","영업요일":"연중무휴","1인 소비 가격대":"중~고가","대표 메뉴":"셀렉트 패션·잡화","추천 메뉴":"독립 브랜드 상품","대표사항":"히로시마 로컬 셀렉트샵","추천사항":"개성있는 아이템 발굴","기타 정보(팁 등)":"히로시마 패션 씬의 감성","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"부정기 휴무 확인","외국어 메뉴":"일본어 위주","예약":"예약 불필요","면세":"면세 가능 여부 확인 필요","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/pencil/data=!4m2!3m1!1s0x355aa20e518e211d:0xb3bc4674fc97e734"},{"가게명":"Bar PRETTY Ken's Bar","카테고리":"바/술집","세부 카테고리":"위스키/진 바","체인점":"X","위치":"나카구 호리카와초 4-5 후지오카빌 1F","구역":"긴자가이","설명/특징":"히로시마 나가레카와 지역의 바. PRETTY 시리즈 바 중 하나","평점":"4.8","리뷰":"33","대표 리뷰":"바텐더 켄이 운영. 영어 완벽 구사. 진·위스키 셀렉션 탁월. 손님과 적극 교류하는 따뜻한 분위기.","영업시간":"18:00~05:00(월~금), 14:00~05:00(토~일)","영업요일":"연중무휴","1인 소비 가격대":"2,000~4,000엔","대표 메뉴":"칵테일, 위스키","추천 메뉴":"마스터 추천 칵테일","대표사항":"히로시마 나가레카와 바 거리 위치","추천사항":"예약 권장","기타 정보(팁 등)":"Bar PRETTY 시리즈 중 하나. 소규모 카운터 바","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모 바, Visa 불가 가능성)","사전에 확인해야 할 것":"소규모 바, 예약 권장 (19:00 이후)","외국어 메뉴":"일본어 위주 (칵테일명 영어)","예약":"전화/SNS 예약 권장 (소규모 바)\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Bar+PRETTY+Ken%E2%80%B2s+Bar/data=!4m2!3m1!1s0x355aa3a292a2cfb3:0x5241033e3f19cc13"},{"가게명":"BAR PRETTY 角松","카테고리":"바/술집","세부 카테고리":"바","체인점":"X","위치":"나카구 호리카와초 3-10 나가코야빌 1F","구역":"긴자가이","설명/특징":"PRETTY 시리즈의 세 번째 바. 각松(카도마츠) 이름의 개성 있는 바","평점":"4.5","리뷰":"22","대표 리뷰":"토미 씨와 남편이 운영. 창문에 하트 마크. 단골들과 함께 어울리는 아늑한 분위기. 오리가미 이벤트도.","영업시간":"17:00~03:00","영업요일":"연중무휴","1인 소비 가격대":"2,000~4,000엔","대표 메뉴":"일본 위스키, 칵테일","추천 메뉴":"위스키 온더록","대표사항":"PRETTY 시리즈 바 중 하나","추천사항":"3개 바 투어 추천","기타 정보(팁 등)":"Bar PRETTY 시리즈 3호점. 나가레카와 바 투어 시 세 곳 모두 방문 가능","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모 바, Visa 불가 가능성)","사전에 확인해야 할 것":"소규모 바, 예약 권장 (19:00 이후)","외국어 메뉴":"일본어 위주","예약":"전화/SNS 예약 권장 (소규모 바)\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/BAR+PRETTY+%E8%A7%92%E6%9D%BE/data=!4m2!3m1!1s0x355aa205e822ae37:0xb8c5414fe0e569f"},{"가게명":"大衆酒場 とんぼ 広島立町店","카테고리":"식당","세부 카테고리":"이자카야","체인점":"X","위치":"나카구 다테마치 3-24 타케모토다테마치빌 1F","구역":"다테마치","설명/특징":"히로시마 현지인에게 인기 있는 대중 이자카야. 저렴하고 맛있는 안주와 주류","평점":"4.7","리뷰":"555","대표 리뷰":"스탭 유니폼 T셔츠를 선물로 주기도 할 만큼 친절. 연어, 게살, 닭 안주 모두 맛있음. 외국인에게 인기. 생맥주 대용량 하이볼.","영업시간":"16:00~24:00(월~토), 14:00~22:00(일)","영업요일":"연중무휴","1인 소비 가격대":"1,500~3,000엔","대표 메뉴":"생맥주, 모츠니(곱창조림)","추천 메뉴":"생맥주+모듬안주","대표사항":"저렴하고 분위기 좋은 현지 이자카야","추천사항":"웨이팅 발생 가능","기타 정보(팁 등)":"현지인 맛집. 저렴한 가격에 다양한 안주. 카운터석과 테이블석 있음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (대중 이자카야, Visa 불가 가능성)","사전에 확인해야 할 것":"웨이팅 발생 가능 (17:00 오픈 직후 방문 추천)","외국어 메뉴":"일본어 메뉴 위주 (사진 메뉴 있을 수 있음)","예약":"예약 불가 (선착순, 웨이팅 발생)","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%E5%A4%A7%E8%A1%86%E9%85%92%E5%A0%B4+%E3%81%A8%E3%82%93%E3%81%BC+%E5%BA%83%E5%B3%B6%E7%AB%8B%E7%94%BA%E5%BA%97/data=!4m2!3m1!1s0x355aa3002e291105:0x42409e76257c4c13"},{"가게명":"Mequl","카테고리":"쇼핑","세부 카테고리":"쿠마노 붓 셀렉트샵","체인점":"X","위치":"나카구 카미야초 혹은 히로시마역 인근","구역":"히로시마역","설명/특징":"히로시마 로컬 셀렉트샵. 생활용품과 패션 잡화 큐레이션","평점":"4.3","리뷰":"4","대표 리뷰":"히로시마산 쿠마노 화장 붓 전문. 히로시마역 신칸센 구내에 위치. 면세 처리 가능. 체험 강좌도 운영.","영업시간":"10:00~19:00","영업요일":"연중무휴","1인 소비 가격대":"구매에 따라 다름","대표 메뉴":"라이프스타일 잡화","추천 메뉴":"히로시마 로컬 브랜드 제품","대표사항":"히로시마 로컬 셀렉트샵","추천사항":"독특한 아이템 발굴 가능","기타 정보(팁 등)":"대형 쇼핑몰에서 찾기 힘든 독립 브랜드 상품","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"부정기 휴무 확인","외국어 메뉴":"일본어 위주","예약":"예약 불필요","면세":"면세 가능 여부 확인 필요","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Mequl/data=!4m2!3m1!1s0x355aa2723d16aaab:0x89ef8f583704abe5"},{"가게명":"빅카메라 히로시마에키마에점","카테고리":"쇼핑","세부 카테고리":"전자제품/카메라","체인점":"X","위치":"미나미구 마츠바라초 5-1 빅프론트 히로시마 지하1~3F","구역":"히로시마역","설명/특징":"히로시마역 앞 대형 전자제품 양판점. 가전, 카메라, PC, 게임, 화장품 등 취급. 면세 가능","평점":"3.7","리뷰":"352","대표 리뷰":"히로시마역 바로 앞. 전자제품, 화장품, 의약품 등 폭넓은 상품군. 면세 처리 가능. 외국인 카운터 있음.","영업시간":"10:00~20:00","영업요일":"연중무휴","1인 소비 가격대":"구매에 따라 다름","대표 메뉴":"가전제품, 카메라, 게임기","추천 메뉴":"면세 쇼핑","대표사항":"히로시마역 앞 대형 전자제품 매장","추천사항":"면세 쇼핑 가능 (5,000엔 이상)","기타 정보(팁 등)":"포인트카드 발급 가능. 역 바로 앞이라 접근성 최고","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능 (면세 시 여권+Visa카드)","사전에 확인해야 할 것":"면세 시 여권 필수, 연중무휴 10:00~21:00","외국어 메뉴":"한국어·영어 응대 가능, 면세 안내 한국어 가능","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권+Visa카드)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EB%B9%85%EC%B9%B4%EB%A9%94%EB%9D%BC+%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88%EC%97%90%ED%82%A4%EB%A7%88%EC%97%90%EC%A0%90/data=!4m2!3m1!1s0x355a9f545f4c5683:0xf5276222d687a6cd"},{"가게명":"ガレージファイン広島店","카테고리":"쇼핑","세부 카테고리":"운동화/신발","체인점":"X","위치":"나카구 후쿠로마치 6-1 후쿠로마치암바 2F","구역":"후쿠로마치","설명/특징":"히로시마 중고의류 및 빈티지 옷 전문점. 가격 대비 좋은 퀄리티","평점":"4.3","리뷰":"20","대표 리뷰":"SPINGLE MOVE 히로시마 최대 취급점. 희귀 아이템 다수. 스탭 친절.","영업시간":"10:30~18:00(화~목), 10:00~18:00(금~일)","영업요일":"월요일 휴무","1인 소비 가격대":"중~고가","대표 메뉴":"중고 의류, 빈티지","추천 메뉴":"빈티지 데님, 아우터","대표사항":"중고·빈티지 의류 전문점","추천사항":"보물 찾기 재미 있음","기타 정보(팁 등)":"히로시마 패션 문화의 일면을 볼 수 있음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"부정기 휴무 확인","외국어 메뉴":"일본어 위주","예약":"예약 불필요","면세":"면세 불가 (중고품)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%E3%82%AC%E3%83%AC%E3%83%BC%E3%82%B8%E3%83%95%E3%82%A1%E3%82%A4%E3%83%B3%E5%BA%83%E5%B3%B6%E5%BA%97/data=!4m2!3m1!1s0x355aa20e50649569:0xbe1ef981703ae17f"},{"가게명":"串道楽 楽車","카테고리":"식당","세부 카테고리":"야키토리/이자카야","체인점":"X","위치":"나카구 에비스초 4-7 카와노빌 2층","구역":"에비스초","설명/특징":"다양한 꼬치구이를 즐길 수 있는 이자카야 스타일 식당","평점":"4.1","리뷰":"100","대표 리뷰":"야키토리와 사케 셀렉션이 훌륭. 외국인 친화적. 영어 메뉴 있음. 닭 껍질, 세세리 추천. 에비스 생맥주.","영업시간":"17:00~02:00","영업요일":"일요일 휴무","1인 소비 가격대":"2,000~4,000엔","대표 메뉴":"다양한 꼬치구이","추천 메뉴":"시오(소금)꼬치, 닭꼬치","대표사항":"꼬치구이 이자카야","추천사항":"저녁 식사 및 음주에 적합","기타 정보(팁 등)":"다양한 부위 꼬치 판매. 맥주 안주로 최적","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"영업 확인","외국어 메뉴":"일본어 메뉴 위주","예약":"전화 예약 권장\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%E4%B8%B2%E9%81%93%E6%A5%BD+%E6%A5%BD%E8%BB%8A/data=!4m2!3m1!1s0x355aa2068e604891:0x964d961bc23653a7"},{"가게명":"야겐보리 핫쇼","카테고리":"식당","세부 카테고리":"오코노미야키","체인점":"X","위치":"나카구 야겐보리 10-6","구역":"야겐보리","설명/특징":"히로시마 야겐보리 지역의 이자카야. 야겐보리는 히로시마 대표 환락가 중 하나","평점":"4.2","리뷰":"1728","대표 리뷰":"줄 서서 먹는 오코노미야키 맛집. 영어 메뉴 있음. 오코노미야키와 함께 그릴 해산물도 추천. 웨이팅 중에 즐기는 굴구이가 별미.","영업시간":"16:00~22:30(화~금), 16:00~21:00(토~일)","영업요일":"월요일 휴무","1인 소비 가격대":"1,000~2,000엔","대표 메뉴":"계절 안주, 지역 술","추천 메뉴":"해산물 안주 + 히로시마 지자케","대표사항":"야겐보리 거리 이자카야","추천사항":"밤 분위기 좋음","기타 정보(팁 등)":"야겐보리 지역 술집 투어 시 들르기 좋음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"일요일 휴무 (4/19·4/20 확인)","외국어 메뉴":"일본어 메뉴 위주","예약":"전화 예약 권장\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%95%BC%EA%B2%90%EB%B3%B4%EB%A6%AC+%ED%95%AB%EC%87%BC/data=!4m2!3m1!1s0x355aa204fcdeee35:0xb44458233702b1c9"},{"가게명":"Standard Products 広島本通店","카테고리":"쇼핑","세부 카테고리":"라이프스타일/생활잡화","체인점":"O","위치":"나카구 혼도리 3-5","구역":"혼도리","설명/특징":"다이소가 운영하는 중가 라인 잡화점. 100~500엔대 고품질 디자인 상품","평점":"2.6","리뷰":"5","대표 리뷰":"다이소 프리미엄 버전. 인테리어 식물 등 다양한 생활용품. 혼도리에서 비교적 최근 오픈.","영업시간":"10:00~21:00","영업요일":"연중무휴","1인 소비 가격대":"저렴","대표 메뉴":"생활잡화, 문구, 주방용품","추천 메뉴":"일본 전통 디자인 잡화","대표사항":"다이소 프리미엄 라인 잡화점","추천사항":"가성비 선물 쇼핑 최적","기타 정보(팁 등)":"다이소 계열이지만 더 고급스러운 디자인. 기념품으로도 적합","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"연중무휴","외국어 메뉴":"영어 표기 있음","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Standard+Products+%E5%BA%83%E5%B3%B6%E6%9C%AC%E9%80%9A%E5%BA%97/data=!4m2!3m1!1s0x355aa30022184131:0x52fdc39278b844a0"},{"가게명":"Daiso","카테고리":"쇼핑","세부 카테고리":"100엔샵","체인점":"O","위치":"나카구 혼도리 1-11 1F","구역":"혼도리","설명/특징":"일본 대표 100엔 균일가 잡화점. 생활용품, 문구, 간식 등 다양한 상품 취급","평점":"3.6","리뷰":"255","대표 리뷰":"혼도리 중심에 위치한 다이소. 4층 규모. 셀프 계산도 가능. 일본 한정 기념품 등 구매하기 좋음.","영업시간":"09:30~21:00","영업요일":"연중무휴","1인 소비 가격대":"100~300엔","대표 메뉴":"생활잡화, 문구","추천 메뉴":"일본 한정 다이소 상품","대표사항":"100엔 균일가 잡화점","추천사항":"기념품 대량 구매에 최적","기타 정보(팁 등)":"여행 소품 구매 및 기념품 대량 구매 시 유리","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능 (일부 소규모점 현금만)","사전에 확인해야 할 것":"연중무휴","외국어 메뉴":"영어·한국어 표기 있음","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Daiso/data=!4m2!3m1!1s0x355aa31eafb63b29:0xee283d40e10356f"},{"가게명":"소고 히로시마점","카테고리":"쇼핑","세부 카테고리":"백화점","체인점":"X","위치":"나카구 모토마치 6-27","구역":"모토마치/가미야초","설명/특징":"혼도리에 위치한 대형 백화점. 패션, 식품, 화장품, 레스토랑 등 종합 취급","평점":"3.8","리뷰":"8711","대표 리뷰":"히로시마 중심부 백화점. 지하 식품관과 3층 버스센터 위치. 옥상 테라스 있음. 소고 히로시마버스센터 연결.","영업시간":"10:00~19:30","영업요일":"연중무휴","1인 소비 가격대":"중~고가","대표 메뉴":"지하 식품관, 브랜드 패션","추천 메뉴":"지하 식품관 디저트·기념품","대표사항":"혼도리 대형 백화점","추천사항":"면세 가능","기타 정보(팁 등)":"지하 식품관에서 히로시마 기념품 구매 추천","꼭 방문해야 할 가게":"지하 식품관 (히로시마 기념품·디저트 집결), 포켓몬센터 (소고 빌딩 내)","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"부정기 휴무 확인, 지하 식품관 영업시간 별도 확인","외국어 메뉴":"한국어·영어 안내 있음, 면세 카운터 영어 가능","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참) ※식품관 제외","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%86%8C%EA%B3%A0+%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88%EC%A0%90/data=!4m2!3m1!1s0x355aa20bfac4b21f:0x87c6f6f8e75a5853"},{"가게명":"야마다 주판점 노보리초점","카테고리":"쇼핑","세부 카테고리":"사케/와인 전문점","체인점":"X","위치":"나카구 노보리초 12-17 핫코빌 1F","구역":"노보리초","설명/특징":"히로시마 주판 전문점 노보리초 지점","평점":"4.4","리뷰":"199","대표 리뷰":"노보리초점. 일본 와인·사케 전문. 스탭이 영어로 설명 가능. 구매한 사케 나가사키 현까지 배송 가능.","영업시간":"10:30~19:00","영업요일":"화요일 휴무","1인 소비 가격대":"구매에 따라 다름","대표 메뉴":"수제 주판","추천 메뉴":"미니 주판","대표사항":"히로시마 주판 전문점","추천사항":"독특한 기념품","기타 정보(팁 등)":"히로시마산 주판은 국내에서 구하기 힘든 기념품","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"일요일 휴무 (4/19·4/20 확인)","외국어 메뉴":"일본어 위주","예약":"예약 불필요","면세":"면세 가능 여부 확인 필요","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%95%BC%EB%A7%88%EB%8B%A4+%EC%A3%BC%ED%8C%90%EC%A0%90+%EB%85%B8%EB%B3%B4%EB%A6%AC%EC%B4%88%EC%A0%90/data=!4m2!3m1!1s0x355aa206fe3a72c5:0x8cb1cdb8ec70e9be"},{"가게명":"中町食器市場","카테고리":"쇼핑","세부 카테고리":"주방용품/도자기","체인점":"X","위치":"나카구 나카마치 1-8","구역":"나카마치","설명/특징":"식기와 주방용품 전문 시장. 저렴한 가격의 일본 식기 구매 가능","평점":"4.3","리뷰":"122","대표 리뷰":"일본 도자기와 주방용품 전문. 가성비 최고. 5층 아울렛 코너에서 저렴하게 구매 가능. 선물용으로 제격.","영업시간":"10:00~19:00","영업요일":"연중무휴","1인 소비 가격대":"저~중간","대표 메뉴":"일본 도자기, 식기류","추천 메뉴":"이마리야키, 기요미즈야키 식기","대표사항":"저렴한 일본 식기 전문점","추천사항":"식기 선물용으로 추천","기타 정보(팁 등)":"일본 식기 문화 체험. 가성비 좋은 도자기 식기","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (시장형, Visa 불가 가능성)","사전에 확인해야 할 것":"부정기 휴무 확인","외국어 메뉴":"일본어 위주","예약":"예약 불필요","면세":"면세 가능 여부 확인 필요 (5,000엔 이상)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%E4%B8%AD%E7%94%BA%E9%A3%9F%E5%99%A8%E5%B8%82%E5%A0%B4/data=!4m2!3m1!1s0x355aa20fcc2fb0d5:0x8f65f32f3039b187"},{"가게명":"에머필","카테고리":"쇼핑","세부 카테고리":"여성 란제리","체인점":"X","위치":"나카구 카미야초 선몰 1F","구역":"가미야초","설명/특징":"히로시마 로컬 셀렉트샵. 국내외 독립 브랜드와 편집 패션","평점":"3.1","리뷰":"20","대표 리뷰":"에이머필 여성 속옷 전문. 카미야초 선몰 내. 일부 스탭 불친절 리뷰 있으나 상품 품질은 좋음.","영업시간":"10:30~20:00","영업요일":"연중무휴","1인 소비 가격대":"중간","대표 메뉴":"독립 패션 브랜드, 잡화","추천 메뉴":"독립 브랜드 의류","대표사항":"히로시마 로컬 패션 셀렉트샵","추천사항":"독립 브랜드 발굴","기타 정보(팁 등)":"히로시마 패션 씬의 일면을 볼 수 있음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능 (확인 권장)","사전에 확인해야 할 것":"부정기 휴무 확인","외국어 메뉴":"일본어 위주","예약":"예약 불필요","면세":"면세 가능 여부 확인 필요","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%97%90%EB%A8%B8%ED%95%84/data=!4m2!3m1!1s0x355aa20c4800058b:0x1e2cdcd454a9c4c7"},{"가게명":"sense","카테고리":"쇼핑","세부 카테고리":"안경/선글라스","체인점":"X","위치":"나카구 후쿠로마치 7-22 SENSE","구역":"후쿠로마치","설명/특징":"히로시마 로컬 패션 셀렉트샵","평점":"4.1","리뷰":"22","대표 리뷰":"히로시마 최고 안경점. 다양한 브랜드 선글라스와 안경. 오너가 골격에 맞는 안경 맞춤 조언. 멕시코 손님도 만족한 영어 소통.","영업시간":"11:00~20:00","영업요일":"수요일 휴무","1인 소비 가격대":"중~고가","대표 메뉴":"독립 브랜드 의류, 잡화","추천 메뉴":"감각적인 패션 아이템","대표사항":"히로시마 로컬 셀렉트샵","추천사항":"독립 브랜드 탐방","기타 정보(팁 등)":"히로시마 패션 씬 감성","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"부정기 휴무 확인","외국어 메뉴":"일본어 위주","예약":"예약 불필요","면세":"면세 가능 여부 확인 필요","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/sense/data=!4m2!3m1!1s0x355aa20e53cf58cb:0xa75a881c0e9801ce"},{"가게명":"히로시마 PARCO","카테고리":"쇼핑","세부 카테고리":"쇼핑몰","체인점":"X","위치":"나카구 혼도리 10-1","구역":"혼도리","설명/특징":"히로시마 최대 패션 쇼핑몰. 패션, 음식, 엔터테인먼트 등 다양한 브랜드 입점","평점":"3.8","리뷰":"3970","대표 리뷰":"혼도리 중심의 쇼핑몰. 젊은 층 타겟. 무지루시, BEAMS, 유나이티드 애로우즈 등 입점. 해리포터 팝업 등 이벤트도.","영업시간":"10:00~20:30","영업요일":"연중무휴","1인 소비 가격대":"다양","대표 메뉴":"패션, 뷰티, 레스토랑","추천 메뉴":"트렌드 패션 쇼핑","대표사항":"히로시마 핵심 쇼핑몰","추천사항":"면세 가능","기타 정보(팁 등)":"혼도리 상점가 내 위치. 소고 백화점과 함께 방문","꼭 방문해야 할 가게":"B1F 식품관, 7F 레스토랑가, 무인양품(파르코 내), UA green label(파르코 내)","카드 사용 가능 여부":"Visa 포함 카드 가능 (대부분 점포)","사전에 확인해야 할 것":"부정기 휴무 확인, 4월 특별 이벤트·팝업 스토어 확인","외국어 메뉴":"영어·한국어 안내 있음","예약":"예약 불필요","면세":"면세 가능 (각 점포 5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88+PARCO/data=!4m2!3m1!1s0x355aa20f6f725f7f:0xf8e59216c6159a54"},{"가게명":"오코노미야키·철판구이 모미지 테이","카테고리":"식당","세부 카테고리":"오코노미야키","체인점":"X","위치":"나카구 카미야초 2-3-10 리브레카미야초빌 302호","구역":"가미야초","설명/특징":"히로시마식 오코노미야키와 철판구이를 즐길 수 있는 식당. 모미지(단풍) 이름처럼 아담하고 분위기 좋음","평점":"4.7","리뷰":"1613","대표 리뷰":"오픈 전 줄 서야 하는 히로시마 오코노미야키 명소. 오너 혼자 운영(최대 12석). 치즈 오코노미야키 강추. 현금 전용.","영업시간":"12:00~16:00, 17:00~22:00(금·토 23:30)","영업요일":"목요일 휴무","1인 소비 가격대":"900~1,500엔","대표 메뉴":"히로시마식 오코노미야키","추천 메뉴":"해산물 믹스 오코노미야키","대표사항":"히로시마식 오코노미야키 전문점","추천사항":"런치 타임에 웨이팅 있음","기타 정보(팁 등)":"철판에서 바로 구워주는 히로시마 스타일. 소바/우동 면 선택 가능","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"수요일 휴무 (4/18·4/19 확인), 11:00~14:30 런치 웨이팅 예상","외국어 메뉴":"일본어 메뉴 위주 (사진 메뉴 있음)","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%98%A4%EC%BD%94%EB%85%B8%EB%AF%B8%EC%95%BC%ED%82%A4%E2%80%A2%EC%B2%A0%ED%8C%90%EA%B5%AC%EC%9D%B4+%EB%AA%A8%EB%AF%B8%EC%A7%80+%ED%85%8C%EC%9D%B4/data=!4m2!3m1!1s0x355aa20db6b02807:0xdea8dd37914fa614"},{"가게명":"츠루 스시","카테고리":"식당","세부 카테고리":"스시","체인점":"X","위치":"나카구 나가레카와초 5-19","구역":"나가레카와","설명/특징":"히로시마 로컬 초밥집. 신선한 세토내해 해산물을 사용한 초밥","평점":"4.6","리뷰":"478","대표 리뷰":"할머니 부부 가족이 운영하는 전통 스시집. 카운터에 직접 놓아주는 에도마에 스시. 인생 최고의 스시라는 극찬 다수. 현금 전용.","영업시간":"17:00~21:30","영업요일":"월·일 휴무","1인 소비 가격대":"3,000~6,000엔","대표 메뉴":"제철 생선 초밥","추천 메뉴":"히로시마 명물 아나고(붕장어) 초밥","대표사항":"로컬 초밥집","추천사항":"예약 추천","기타 정보(팁 등)":"세토내해 신선한 해산물. 붕장어 초밥은 히로시마 특산","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"월요일 휴무 (4/18·4/21 방문 불가)","외국어 메뉴":"일본어 메뉴 위주","예약":"전화 예약 권장\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%B8%A0%EB%A3%A8+%EC%8A%A4%EC%8B%9C/data=!4m2!3m1!1s0x355aa20512e58931:0x6c65fcadcd2cc9b"},{"가게명":"Miyatoyo-honten","카테고리":"카페","세부 카테고리":"모미지만주","체인점":"X","위치":"하쓰카이치시 미야지마초 기타노마치하마 549","구역":"미야지마","설명/특징":"미야지마 전통 음식점. 아나고메시(붕장어 덮밥) 등 미야지마 향토 음식 전문","평점":"4.3","리뷰":"168","대표 리뷰":"직접 구워 만드는 모미지만주 전문점. 치즈·유즈 등 다양한 맛. 따뜻하게 먹을 수 있음. 홋쿠 차와 함께 즐기는 세트.","영업시간":"09:30~17:00","영업요일":"연중무휴","1인 소비 가격대":"120엔/개","대표 메뉴":"아나고메시(붕장어 덮밥)","추천 메뉴":"아나고메시","대표사항":"미야지마 전통 음식 노포","추천사항":"줄이 길 수 있음","기타 정보(팁 등)":"아나고메시는 미야지마 명물 음식. 오전 방문 추천","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (미야지마, Visa 불가 가능성)","사전에 확인해야 할 것":"부정기 휴무 확인, 10:00 오픈 직후 방문 추천 (재료 소진 조기 마감)","외국어 메뉴":"영어 메뉴 있음 (미야지마 관광지)","예약":"예약 불가 (선착순, 조기 마감 주의)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Miyatoyo-honten/data=!4m2!3m1!1s0x355ab0b1aee75753:0xa07bb57c88163be"},{"가게명":"Sushi Tatsu Ekie","카테고리":"식당","세부 카테고리":"스시","체인점":"X","위치":"미나미구 마츠바라초 1-2 에키에 내부","구역":"히로시마역","설명/특징":"히로시마역 ekie 쇼핑몰 내 초밥 레스토랑. 여행 중 편하게 초밥 즐기기 좋음","평점":"4.0","리뷰":"1195","대표 리뷰":"히로시마역 에키에 내 스시집. 태블릿 영어 메뉴 주문 가능. 신선한 회와 장어 요리 다양. 줄 서는 경우 있음.","영업시간":"11:00~22:00","영업요일":"연중무휴","1인 소비 가격대":"1,500~3,000엔","대표 메뉴":"초밥 세트","추천 메뉴":"히로시마 명물 아나고 초밥","대표사항":"히로시마역 내 초밥 레스토랑","추천사항":"여행 마지막 날 추천","기타 정보(팁 등)":"ekie 쇼핑몰 내 위치로 쇼핑 후 방문 편리","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"연중무휴, ekie 영업시간 확인","외국어 메뉴":"영어 메뉴 있음","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Sushi+Tatsu+Ekie/data=!4m2!3m1!1s0x355a9f53c70d1ca1:0x87694332f0ec5859"},{"가게명":"Kushi-no-bo","카테고리":"식당","세부 카테고리":"쿠시카츠/꼬치튀김","체인점":"X","위치":"나카구 호리카와초 7-4","구역":"긴자가이","설명/특징":"오사카 발 쿠시카츠(꼬치 튀김) 전문 체인점. 다양한 재료를 꼬치에 꿰어 튀긴 요리","평점":"4.1","리뷰":"161","대표 리뷰":"10종 코스 추천. 영어 메뉴 있음. 쇼와 시대 분위기의 아늑한 공간. 말차 아이스크림 디저트와 전통 과자 제공.","영업시간":"11:30~13:00, 17:00~22:00","영업요일":"연중무휴","1인 소비 가격대":"1,500~3,500엔","대표 메뉴":"다양한 꼬치카츠","추천 메뉴":"새우 쿠시카츠, 규탄 쿠시카츠","대표사항":"쿠시카츠 전문 체인점","추천사항":"소스에 두 번 찍기 금지 (오사카 규칙)","기타 정보(팁 등)":"다양한 꼬치를 세트로 주문 가능. 맥주 안주로 최적","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"연중무휴 11:00~23:00","외국어 메뉴":"영어 메뉴 있음","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Kushi-no-bo/data=!4m2!3m1!1s0x355aa20f6715425b:0xf5fc36d2e19b11df"},{"가게명":"돈키호테 히로시마핫초보리점","카테고리":"쇼핑","세부 카테고리":"드럭스토어/잡화","체인점":"O","위치":"나카구 신텐치 5-3","구역":"신텐치","설명/특징":"일본 대형 종합 잡화 할인점. 과자, 화장품, 의류, 전자제품 등 모든 것을 저렴하게. 면세 가능","평점":"3.8","리뷰":"3999","대표 리뷰":"히로시마 핫초보리 중심. 새벽 5시까지 영업. 면세 카운터 대기 길 수 있음. 히로시마점은 의약품 취급 없음.","영업시간":"10:00~05:00","영업요일":"연중무휴","1인 소비 가격대":"저렴~다양","대표 메뉴":"과자, 화장품, 의류, 전자제품","추천 메뉴":"일본 화장품, 과자 대량 구매","대표사항":"24시간에 가까운 대형 할인점","추천사항":"면세 가능 (5,000엔 이상)","기타 정보(팁 등)":"여행 마지막 날 쇼핑 or 늦은 시간 쇼핑에 최적. 포인트카드 발급 가능","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능 (면세 시 여권+Visa카드)","사전에 확인해야 할 것":"면세 시 여권 필수, 거의 24시간 영업","외국어 메뉴":"한국어·영어 안내 있음, 면세 카운터 한국어 가능","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권+Visa카드)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EB%8F%88%ED%82%A4%ED%98%B8%ED%85%8C+%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88%ED%95%AB%EC%B4%88%EB%B3%B4%EB%A6%AC%EC%A0%90/data=!4m2!3m1!1s0x355aa20f820b8743:0xde7781428c6b04cc"},{"가게명":"Chibo Parlor","카테고리":"카페","세부 카테고리":"쉐이크/아이스크림","체인점":"X","위치":"나카구 오오테마치 1-5-3","구역":"오오테마치","설명/특징":"오사카 발 오코노미야키 체인 치보(千房)의 히로시마점. 양질의 오코노미야키와 철판 메뉴","평점":"3.7","리뷰":"43","대표 리뷰":"히로시마 명물 치치야스 우유 마스코트 치보 카페. 레몬, 아카이 하와이, 말차 쉐이크 등 다양. 컵도 귀엽고 양도 넉넉.","영업시간":"12:00~16:00(화~금), 12:00~18:00(토~일)","영업요일":"월요일 휴무","1인 소비 가격대":"600~800엔","대표 메뉴":"오코노미야키, 야키소바","추천 메뉴":"히로시마풍 오코노미야키","대표사항":"오사카 발 유명 오코노미야키 체인점","추천사항":"오사카식과 히로시마식 비교 가능","기타 정보(팁 등)":"체인점이지만 퀄리티 안정적","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"연중무휴 11:00~22:00","외국어 메뉴":"영어 메뉴 있음","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Chibo+Parlor/data=!4m2!3m1!1s0x355aa3006ea2d4ff:0x935c6d3ff4d8543b"},{"가게명":"Third Terrace","카테고리":"카페","세부 카테고리":"타르트/디저트","체인점":"X","위치":"나카구 미카와초 5","구역":"나가레카와","설명/특징":"히로시마 패션 셀렉트 복합 매장","평점":"4.8","리뷰":"20","대표 리뷰":"다양한 타르트와 바스크 치즈케이크 전문. 피스타치오, 라즈베리 타르트 강추. 쇼핑 후 휴식에 안성맞춤.","영업시간":"12:00~17:00(월~금), 12:00~18:00(토~일)","영업요일":"연중무휴","1인 소비 가격대":"600~1,500엔","대표 메뉴":"패션 브랜드","추천 메뉴":"독립 패션","대표사항":"패션 복합 매장","추천사항":"개성있는 브랜드 탐방","기타 정보(팁 등)":"히로시마 패션 씬","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능 (확인 권장)","사전에 확인해야 할 것":"부정기 휴무 확인","외국어 메뉴":"일본어 위주","예약":"예약 불필요","면세":"면세 가능 여부 확인 필요","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Third+Terrace/data=!4m2!3m1!1s0x355aa20fdbce8731:0x52f83550e41fd61b"},{"가게명":"Vivian Westwood Designs for Men","카테고리":"쇼핑","세부 카테고리":"명품패션(남성)","체인점":"X","위치":"나카구 미카와초 5-10","구역":"나가레카와","설명/특징":"영국 명품 패션 브랜드 비비안 웨스트우드 남성 라인 히로시마 매장","평점":"4.3","리뷰":"24","대표 리뷰":"비비안웨스트우드 맨즈 히로시마점. 한국 손님에게는 파파고로 소통. 타 지역에 없는 아이템 보유.","영업시간":"확인 필요","영업요일":"확인 필요","1인 소비 가격대":"고가","대표 메뉴":"비비안 웨스트우드 남성 의류·악세서리","추천 메뉴":"시그니처 오브 제품","대표사항":"비비안 웨스트우드 남성 라인 전문점","추천사항":"명품 쇼핑","기타 정보(팁 등)":"히로시마의 명품 쇼핑 명소","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"부정기 휴무 확인","외국어 메뉴":"영어 응대 가능","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Vivian+Westwood+Designs+for+Men/data=!4m2!3m1!1s0x355aa20bc57529a5:0x6fbc48fe9931871f"},{"가게명":"미코토야","카테고리":"식당","세부 카테고리":"아나고/굴요리","체인점":"X","위치":"하쓰카이치시 미야지마초 785","구역":"미야지마","설명/특징":"미야지마 섬 내 기념품 가게 겸 음식점. 모미지만쥬 등 미야지마 명물 판매","평점":"4.8","리뷰":"221","대표 리뷰":"미야지마 최고의 아나고(장어) 맛집. 예약 필수. 오너 셰프 혼자 운영. 굴 튀김 템푸라도 절품. 영어 소통 가능.","영업시간":"11:00~13:30, 17:00~19:30(화~금·일), 목 점심만","영업요일":"월요일 휴무","1인 소비 가격대":"1,500~4,000엔","대표 메뉴":"갓 구운 모미지만쥬","추천 메뉴":"따뜻한 모미지만쥬","대표사항":"미야지마 명물 모미지만쥬 판매","추천사항":"갓 구운 것 추천","기타 정보(팁 등)":"미야지마에서는 갓 구운 모미지만쥬를 먹는 것이 포인트","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"부정기 휴무 확인 (미야지마섬)","외국어 메뉴":"일본어 위주 (사진 메뉴 있음)","예약":"예약 불필요","면세":"면세 가능 여부 확인 필요 (기념품·과자류)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EB%AF%B8%EC%BD%94%ED%86%A0%EC%95%BC/data=!4m2!3m1!1s0x355ab1b3ccf034a7:0x6149d3ed807f7386"},{"가게명":"코바","카테고리":"바/술집","세부 카테고리":"바/이자카야","체인점":"X","위치":"나카구 나카마치 1-4","구역":"나카마치","설명/특징":"히로시마 로컬 이자카야 코바","평점":"4.8","리뷰":"599","대표 리뷰":"3층 계단 올라가는 숨은 바. 오너가 손님 간 교류를 적극 유도. 음식도 맛있음. 바이닐 음악과 함께. 히로시마 최고의 술집 중 하나.","영업시간":"19:00~02:00","영업요일":"수요일 휴무","1인 소비 가격대":"2,000~4,000엔","대표 메뉴":"이자카야 메뉴","추천 메뉴":"안주 모듬","대표사항":"로컬 이자카야","추천사항":"저녁 식사 및 음주","기타 정보(팁 등)":"현지인 이용 많음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"부정기 휴무 확인","외국어 메뉴":"일본어 메뉴 위주","예약":"전화 예약 권장\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%BD%94%EB%B0%94/data=!4m2!3m1!1s0x355aa20fcf4d2ae7:0x7f8325c4819b3ef4"},{"가게명":"ＭＩＲＡＩ","카테고리":"식당","세부 카테고리":"오코노미야키","체인점":"X","위치":"나카구 오오테마치 5-8-13 에코빌 1F","구역":"오오테마치 인근","설명/특징":"히로시마 로컬 패션 셀렉트샵 미라이","평점":"4.8","리뷰":"105","대표 리뷰":"오너가 매우 친절. 치즈·굴 오코노미야키 강추. 초보자도 편하게 즐길 수 있는 오코노미야키. 테이블 석 있어 가족 단위도 ok.","영업시간":"11:00~14:00, 17:00~22:00(화~일), 월 점심만","영업요일":"연중무휴(월 점심만)","1인 소비 가격대":"900~1,500엔","대표 메뉴":"셀렉트 패션","추천 메뉴":"독립 브랜드 의류","대표사항":"히로시마 로컬 패션 셀렉트샵","추천사항":"독립 브랜드 탐방","기타 정보(팁 등)":"히로시마 패션 씬","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"부정기 휴무 확인","외국어 메뉴":"일본어 위주","예약":"예약 불필요","면세":"면세 가능 여부 확인 필요","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EF%BC%AD%EF%BC%A9%EF%BC%B2%EF%BC%A1%EF%BC%A9/data=!4m2!3m1!1s0x355aa20fabb5d08f:0xc0fdc7741964231d"},{"가게명":"太閤らーめん","카테고리":"식당","세부 카테고리":"라멘","체인점":"X","위치":"나카구 다테마치 5-2","구역":"다테마치","설명/특징":"히로시마 다테마치의 라멘 전문점","평점":"4.1","리뷰":"346","대표 리뷰":"쇼유·시오 라멘 탁월. 히로시마 최고 라멘 중 하나라는 평. 차슈가 아주 부드럽게 녹음. 스탭 친절.","영업시간":"11:00~17:00, 18:00~20:45","영업요일":"월요일 휴무","1인 소비 가격대":"900~1,300엔","대표 메뉴":"라멘","추천 메뉴":"차슈 라멘","대표사항":"히로시마 로컬 라멘 전문점","추천사항":"현지인 단골 가게","기타 정보(팁 등)":"양 많고 저렴한 라멘","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"화요일 휴무 (4/18~21 중 화요일 없음)","외국어 메뉴":"일본어 메뉴 위주","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%E5%A4%AA%E9%96%A4%E3%82%89%E3%83%BC%E3%82%81%E3%82%93/data=!4m2!3m1!1s0x355aa38b7302f4f5:0x6d7a30362edaed4e"},{"가게명":"Yakitori no meimon Akiyoshi","카테고리":"식당","세부 카테고리":"야키토리","체인점":"X","위치":"나카구 후쿠로마치 3-11","구역":"후쿠로마치","설명/특징":"일본 전국 야키토리 체인 아키요시(秋吉). 다양한 부위의 닭꼬치를 저렴하게 즐길 수 있음","평점":"4.3","리뷰":"424","대표 리뷰":"히로시마 유명 야키토리 체인. 한·영·중 메뉴 있음. 철판 바에서 굽는 모습 관람. 연한 닭껍질·대파 꼬치 추천.","영업시간":"17:00~23:00(월·수~금), 16:00~22:30(토~일)","영업요일":"화요일 휴무","1인 소비 가격대":"1,500~3,000엔","대표 메뉴":"야키토리 모듬","추천 메뉴":"다레(소스) 닭꼬치, 시오(소금) 닭꼬치","대표사항":"저렴한 야키토리 전문 체인점","추천사항":"꼬치 개당 가격 저렴","기타 정보(팁 등)":"꼬치 하나하나 주문 가능. 맥주 안주 최적","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능 (확인 권장)","사전에 확인해야 할 것":"영업 확인 (연중무휴 가능성 높으나 재확인)","외국어 메뉴":"영어 메뉴 있음","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Yakitori+no+meimon+Akiyoshi/data=!4m2!3m1!1s0x355aa20dd78424df:0x1838081177828eda"},{"가게명":"토미야","카테고리":"식당","세부 카테고리":"스테이크/스키야키","체인점":"X","위치":"나카구 후쿠로마치 2-6","구역":"후쿠로마치","설명/특징":"히로시마 로컬 이자카야 겸 정식 식당","평점":"4.1","리뷰":"747","대표 리뷰":"와규 스키야키가 절품. 새우구이도 인기. 스탭 친절하고 어린이 동반 가능. 주류 무제한 옵션 있음.","영업시간":"11:30~15:00, 17:00~23:00","영업요일":"월요일 휴무","1인 소비 가격대":"1,500~4,000엔","대표 메뉴":"정식, 이자카야 안주","추천 메뉴":"히로시마 향토 요리 정식","대표사항":"로컬 이자카야·정식 식당","추천사항":"가성비 좋음","기타 정보(팁 등)":"현지인이 많이 찾는 가게","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"수요일 휴무 (4/18·4/19 확인)","외국어 메뉴":"일본어 위주","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%ED%86%A0%EB%AF%B8%EC%95%BC/data=!4m2!3m1!1s0x355aa20e5a1c47c3:0x8bd936d7aa6beedd"},{"가게명":"Caffè Ponte","카테고리":"식당","세부 카테고리":"이탈리안 레스토랑","체인점":"X","위치":"나카구 오오테마치 1-9-21","구역":"오오테마치","설명/특징":"히로시마 오타강변에 위치한 이탈리안 카페 레스토랑. 강 전망 좋음","평점":"4.3","리뷰":"1566","대표 리뷰":"히로시마 굴을 활용한 이탈리안 파스타가 특기. 피자도 맛있음. 강변 테라스 뷰가 훌륭. 미야지마 페리 탑승지 바로 옆.","영업시간":"10:00~22:00(평일), 08:00~22:00(주말)","영업요일":"연중무휴","1인 소비 가격대":"1,500~3,000엔","대표 메뉴":"파스타, 리조또","추천 메뉴":"강변 테라스 자리","대표사항":"오타강변 전망 레스토랑","추천사항":"테라스 자리는 예약 추천","기타 정보(팁 등)":"평화공원 인근으로 관광 후 식사하기 좋음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"부정기 휴무 확인, 강변 테라스 자리 예약 권장","외국어 메뉴":"영어 메뉴 있음","예약":"테라스 자리 예약 권장\n▶ 전화: 구글맵에서 확인\n▶ 구글맵 예약 가능 여부 현장 확인","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Caff%C3%A8+Ponte/data=!4m2!3m1!1s0x355aa20d17743d03:0xb07a1b2acf4005d5"},{"가게명":"〒730-0036 Hiroshima Fukuromachi 2-7 プレイグラウンドビル","카테고리":"쇼핑","세부 카테고리":"복합 빌딩","체인점":"X","위치":"나카구 후쿠로마치 2-7 플레이그라운드빌","구역":"후쿠로마치","설명/특징":"후쿠로마치에 위치한 플레이그라운드 빌딩. 개성있는 셀렉트샵들이 입점한 건물","평점":"0.0","리뷰":"0","대표 리뷰":"후쿠로마치 플레이그라운드 빌딩. 다양한 점포 입점.","영업시간":"확인 필요","영업요일":"확인 필요","1인 소비 가격대":"확인 필요","대표 메뉴":"셀렉트샵 아이템","추천 메뉴":"독립 브랜드 상품","대표사항":"개성있는 셀렉트샵 빌딩","추천사항":"각 층마다 다른 브랜드","기타 정보(팁 등)":"히로시마 인디 패션/잡화 탐방에 적합","꼭 방문해야 할 가게":"각 층 독립 셀렉트샵 (층별로 다른 브랜드, 1~3층 탐방 추천)","카드 사용 가능 여부":"점포별 상이 (현금 권장, Visa 불가 가능성 높음)","사전에 확인해야 할 것":"각 점포 영업 시간·휴무 개별 확인","외국어 메뉴":"점포별 상이","예약":"점포별 상이 (예약 불필요 위주)","면세":"점포별 상이 (확인 필요)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%E3%80%92730-0036+Hiroshima,+Naka+Ward,+Fukuromachi,+2%E2%88%927+%E3%83%97%E3%83%AC%E3%82%A4%E3%82%B0%E3%83%A9%E3%82%A6%E3%83%B3%E3%83%89%E3%83%93%E3%83%AB/data=!4m2!3m1!1s0x355aa20e5982a843:0x24bb09a4ef65cbba"},{"가게명":"GiGO 히로시마 혼도리점","카테고리":"엔터테인먼트","세부 카테고리":"게임센터","체인점":"X","위치":"나카구 혼도리 9-30 랜드마크빌 1F·B1F","구역":"혼도리","설명/특징":"세가 계열 대형 게임센터. UFO 캐쳐(크레인 게임), 리듬게임, 포토부스(프리쿠라) 등","평점":"3.1","리뷰":"303","대표 리뷰":"혼도리 게임센터. 포토이즘(포토부스) 입점. UFO캐처 위주. 일부 기기 당첨률 낮다는 평.","영업시간":"10:00~23:00","영업요일":"연중무휴","1인 소비 가격대":"100~500엔/게임","대표 메뉴":"UFO캐처(크레인 게임), 프리쿠라","추천 메뉴":"캐릭터 굿즈 UFO 캐처","대표사항":"세가 계열 대형 게임센터","추천사항":"혼도리 상점가 내 위치","기타 정보(팁 등)":"여행 중 가볍게 들르기 좋음. 캐릭터 굿즈 크레인 게임 인기","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 필수 (게임 자판기 현금, Visa 불가)","사전에 확인해야 할 것":"현금 준비, 연중무휴 10:00~23:00","외국어 메뉴":"일본어 위주 (게임기 한국어 지원 일부)","예약":"예약 불필요","면세":"면세 불가 (오락시설)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/GiGO+%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88+%ED%98%BC%EB%8F%84%EB%A6%AC%EC%A0%90/data=!4m2!3m1!1s0x355aa20f1005f55f:0x7b0cdd581816a332"},{"가게명":"Hiroshima PARCO Annex","카테고리":"쇼핑","세부 카테고리":"쇼핑몰","체인점":"X","위치":"나카구 신텐치 2-1","구역":"혼도리/파르코","설명/특징":"히로시마 파르코 별관. 패션, 라이프스타일, 카페 등 다양한 브랜드 입점","평점":"3.9","리뷰":"371","대표 리뷰":"파르코 별관. 무지루시 7~8층, 타워레코드 9층 입점. 스시로(회전초밥) 입점으로 인기.","영업시간":"10:00~20:30","영업요일":"연중무휴","1인 소비 가격대":"다양","대표 메뉴":"패션 브랜드","추천 메뉴":"본관과 연계 쇼핑","대표사항":"파르코 별관","추천사항":"본관과 함께 방문 추천","기타 정보(팁 등)":"히로시마 PARCO 본관 맞은편 또는 인근","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"부정기 휴무 확인","외국어 메뉴":"영어 안내 있음","예약":"예약 불필요","면세":"면세 가능 (각 점포 5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Hiroshima+PARCO+Annex/data=!4m2!3m1!1s0x355aa33a834d66a1:0x69e0ba2f9e6663ae"},{"가게명":"GU Kamiyacho Sunmall","카테고리":"쇼핑","세부 카테고리":"패스트패션","체인점":"O","위치":"나카구 카미야초 2-2-18 선몰 1F","구역":"가미야초","설명/특징":"유니클로 계열 저가 패스트패션 체인 GU. 트렌디한 디자인을 저렴하게","평점":"3.7","리뷰":"275","대표 리뷰":"유니클로 자매 브랜드 GU. 선몰 1층. 저렴하고 트렌디한 패션. 5,000엔 이상 구매 시 면세 가능.","영업시간":"10:30~20:00","영업요일":"연중무휴","1인 소비 가격대":"저렴","대표 메뉴":"트렌드 의류, 하의, 아우터","추천 메뉴":"계절 한정 트렌드 아이템","대표사항":"저가 트렌드 패션 체인","추천사항":"유니클로와 함께 방문 추천","기타 정보(팁 등)":"유니클로보다 더 젊고 트렌디한 스타일","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"연중무휴, 가미야초 선몰 내 유니클로와 함께 방문","외국어 메뉴":"영어 표기 있음","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/GU+Kamiyacho+Sunmall/data=!4m2!3m1!1s0x355aa20e23a785a7:0x456f47913cae0527"},{"가게명":"유어스 리비 마트","카테고리":"쇼핑","세부 카테고리":"슈퍼마켓/편의점","체인점":"X","위치":"나카구 후쿠로마치 3-1","구역":"후쿠로마치","설명/특징":"히로시마 지역 슈퍼마켓 체인 리비. 현지 식재료 및 생활용품 구매 가능","평점":"3.7","리뷰":"664","대표 리뷰":"혼도리 중심의 슈퍼마켓. 히로시마 지역 농산물·해산물 풍부. 도시락, 반찬 등 가격 합리적. 카드 결제 가능.","영업시간":"09:00~22:30(평일), 09:00~22:00(주말)","영업요일":"연중무휴","1인 소비 가격대":"저렴","대표 메뉴":"현지 식재료, 음료, 과자","추천 메뉴":"히로시마 한정 식품","대표사항":"히로시마 로컬 슈퍼마켓","추천사항":"현지 식재료 구매에 적합","기타 정보(팁 등)":"여행 중 간단한 식재료나 음료 구매","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"영업시간 확인 (지역 슈퍼마켓)","외국어 메뉴":"일본어 위주","예약":"예약 불필요","면세":"면세 가능 여부 확인 필요","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%EC%9C%A0%EC%96%B4%EC%8A%A4+%EB%A6%AC%EB%B9%84+%EB%A7%88%ED%8A%B8/data=!4m2!3m1!1s0x355aa20e7bcd9ffd:0xadb6d8790265686e"},{"가게명":"ABC-MART Hiroshima Shop","카테고리":"쇼핑","세부 카테고리":"신발","체인점":"O","위치":"나카구 혼도리 9-35 우시오빌 1~2F","구역":"혼도리","설명/특징":"일본 대형 신발 체인점. Nike, Adidas, New Balance 등 스포츠 브랜드 신발 취급","평점":"3.5","리뷰":"92","대표 리뷰":"혼도리 ABC마트. 나이키, 아식스 등 다양한 신발 브랜드. 일부 스탭 불친절 리뷰 있음.","영업시간":"11:00~20:30","영업요일":"연중무휴","1인 소비 가격대":"저~중간","대표 메뉴":"나이키, 아디다스 스니커즈","추천 메뉴":"한국보다 저렴한 한정판","대표사항":"대형 신발 체인점","추천사항":"한정 모델 확인 추천","기타 정보(팁 등)":"혼도리 상점가 내 위치. 일본 한정 컬러 있음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"연중무휴, 한정 모델 재고 확인","외국어 메뉴":"영어 표기 있음","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/ABC-MART+Hiroshima+Shop/data=!4m2!3m1!1s0x355aa20f12dbc621:0x1c6b54cd8b547137"},{"가게명":"スーパースポーツゼビオ 福屋広島駅前店","카테고리":"쇼핑","세부 카테고리":"스포츠용품","체인점":"X","위치":"미나미구 마츠바라초 9-1 후쿠야 히로시마에키마에점 5F","구역":"히로시마역","설명/특징":"히로시마역 앞 후쿠야 백화점 내 대형 스포츠용품점. 아웃도어·운동복·용품 종합","평점":"4.7","리뷰":"9","대표 리뷰":"히로시마역 앞 후쿠야 백화점 5층. 달리기, 골프, 테니스 등 스포츠 전반 용품.","영업시간":"10:00~20:00","영업요일":"연중무휴","1인 소비 가격대":"중~고가","대표 메뉴":"러닝화, 아웃도어 용품","추천 메뉴":"스포츠 의류","대표사항":"대형 스포츠용품 종합 매장","추천사항":"면세 가능","기타 정보(팁 등)":"히로시마역 앞 접근 편리","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"면세 가능 여부 확인","외국어 메뉴":"영어 표기 있음","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%E3%82%B9%E3%83%BC%E3%83%91%E3%83%BC%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%84%E3%82%BC%E3%83%93%E3%82%AA+%E7%A6%8F%E5%B1%8B%E5%BA%83%E5%B3%B6%E9%A7%85%E5%89%8D%E5%BA%97/data=!4m2!3m1!1s0x355a9f80933ea587:0x25c56628a7eedaba"},{"가게명":"Round 1 Hiroshima","카테고리":"엔터테인먼트","세부 카테고리":"볼링/게임센터","체인점":"X","위치":"나카구 다테마치 3-11","구역":"다테마치","설명/특징":"볼링, 게임센터, 스포츠 등 종합 엔터테인먼트 복합 시설. 여러 층으로 구성","평점":"3.4","리뷰":"957","대표 리뷰":"볼링, 당구, 노래방, 게임 등 복합 오락 시설. 주말은 24시간 운영. 혼도리 중심부 접근성 좋음.","영업시간":"10:00~06:00(평일), 24시간(주말)","영업요일":"연중무휴","1인 소비 가격대":"500~2,000엔","대표 메뉴":"볼링, 게임센터, 스포츠","추천 메뉴":"볼링 + 게임센터 세트","대표사항":"종합 오락 시설","추천사항":"비 오는 날 실내 활동 최적","기타 정보(팁 등)":"히로시마 최대급 복합 오락시설","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능 (게임 자판기는 현금)","사전에 확인해야 할 것":"거의 24시간, 비 오는 날 실내 활동 옵션","외국어 메뉴":"영어·한국어 일부 안내","예약":"예약 불필요","면세":"면세 불가 (오락시설)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Round+1+Hiroshima/data=!4m2!3m1!1s0x355aa20edf244ec7:0xf9307a5a59a5229a"},{"가게명":"타이토스테이션 히로시마 가미야초점","카테고리":"엔터테인먼트","세부 카테고리":"게임센터","체인점":"X","위치":"나카구 카미야초 2-2-21","구역":"가미야초","설명/특징":"타이토 계열 게임센터. UFO 캐쳐, 리듬게임, 프리쿠라 등","평점":"3.7","리뷰":"444","대표 리뷰":"5층 규모 게임센터. 포토부스, UFO캐처, 댄스 게임 등. 스탭이 기계 문제 해결에 친절하게 도와줌.","영업시간":"10:00~24:00","영업요일":"연중무휴","1인 소비 가격대":"100~500엔/게임","대표 메뉴":"UFO캐처, 리듬게임","추천 메뉴":"인기 캐릭터 크레인 게임","대표사항":"타이토 계열 게임센터","추천사항":"가미야초역 근처 편리한 접근","기타 정보(팁 등)":"가미야초점과 혼도리점 두 곳 있음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 필수 (게임 자판기 현금, Visa 불가)","사전에 확인해야 할 것":"연중무휴 10:00~23:00, 현금 준비","외국어 메뉴":"일본어 위주","예약":"예약 불필요","면세":"면세 불가 (오락시설)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%ED%83%80%EC%9D%B4%ED%86%A0%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%85%98+%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88+%EA%B0%80%EB%AF%B8%EC%95%BC%EC%B4%88%EC%A0%90/data=!4m2!3m1!1s0x355aa20c4c55bbb5:0x440e6c4249c49aef"},{"가게명":"타이토 스테이션 히로시마 혼도리점","카테고리":"엔터테인먼트","세부 카테고리":"게임센터","체인점":"X","위치":"나카구 혼도리 3-5 세라카구혼도리빌","구역":"혼도리","설명/특징":"타이토 계열 게임센터 혼도리점. 혼도리 상점가 내 위치","평점":"3.7","리뷰":"907","대표 리뷰":"혼도리 중심의 게임센터. 공포 게임 지하에 있음. 다트 등 다양한 게임. 포켓몬 굿즈 관련 UFO캐처 많음.","영업시간":"10:00~24:00","영업요일":"연중무휴","1인 소비 가격대":"100~500엔/게임","대표 메뉴":"UFO캐처, 프리쿠라","추천 메뉴":"캐릭터 크레인 게임","대표사항":"혼도리 상점가 내 게임센터","추천사항":"쇼핑 중 잠깐 들르기 좋음","기타 정보(팁 등)":"가미야초점과 혼도리점 두 곳 있음","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 필수 (게임 자판기 현금, Visa 불가)","사전에 확인해야 할 것":"연중무휴 10:00~23:00, 현금 준비","외국어 메뉴":"일본어 위주","예약":"예약 불필요","면세":"면세 불가 (오락시설)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%ED%83%80%EC%9D%B4%ED%86%A0+%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%85%98+%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88+%ED%98%BC%EB%8F%84%EB%A6%AC%EC%A0%90/data=!4m2!3m1!1s0x355aa20f1c5b6631:0x7c319e22607770e9"},{"가게명":"2nd Street","카테고리":"쇼핑","세부 카테고리":"빈티지/중고의류","체인점":"X","위치":"나카구 혼도리 2-9","구역":"혼도리","설명/특징":"일본 대형 중고품 체인점. 의류, 잡화, 가전 등 중고품 취급","평점":"4.7","리뷰":"3","대표 리뷰":"세컨드스트리트 혼도리 2호점. 매입·판매 모두 가능. 오사카·도쿄보다 고급스러운 분위기의 중고 의류 전문점.","영업시간":"10:00~21:00","영업요일":"연중무휴","1인 소비 가격대":"저~중간","대표 메뉴":"중고 의류, 잡화","추천 메뉴":"일본 브랜드 빈티지","대표사항":"일본 대형 중고품 체인","추천사항":"보물 찾기 재미","기타 정보(팁 등)":"의류부터 가전까지 다양한 중고품. 저렴한 가격","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"연중무휴 10:00~21:00","외국어 메뉴":"영어 표기 있음","예약":"예약 불필요","면세":"면세 불가 (중고품)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/2nd+Street/data=!4m2!3m1!1s0x355aa20f6a2d438d:0xb37e4b2bfb2ced91"},{"가게명":"히로시마버스센터","카테고리":"교통","세부 카테고리":"버스터미널","체인점":"X","위치":"나카구 모토마치 6 소고백화점 3F","구역":"모토마치/가미야초","설명/특징":"히로시마 최대 고속버스 터미널. 교토, 오사카, 후쿠오카 등 일본 각지 고속버스 출발","평점":"4.6","리뷰":"24","대표 리뷰":"소고 백화점 3층. 공항 리무진 버스 이용 가능. 1일권 구매 가능(전차+미야지마 페리). 히로시마역보다 시내 접근성 우수.","영업시간":"07:00~(버스 시간표에 따라 다름)","영업요일":"연중무휴","1인 소비 가격대":"-","대표 메뉴":"고속버스 (오사카, 교토, 후쿠오카 방면)","추천 메뉴":"히로시마 공항 리무진버스","대표사항":"히로시마 고속버스 터미널","추천사항":"공항버스 출발지","기타 정보(팁 등)":"소고 백화점 4층에 위치. 공항 리무진버스도 이곳 출발","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 / IC카드 (버스별 상이)","사전에 확인해야 할 것":"⚠️ 공항 리무진버스 시간표 사전 확인 필수 (히로시마공항 행), 소고 백화점 4층 위치, IC카드 사용 가능 여부 버스별 상이","외국어 메뉴":"한국어·영어 안내 있음","예약":"고속버스 사전 예약 필수\n▶ 야후 재팬 버스: https://transit.yahoo.co.jp/\n▶ 발버스: https://www.vipliner.biz/\n▶ 하이웨이버스닷컴: https://www.highwaybus.com/","면세":"해당없음","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88%EB%B2%84%EC%8A%A4%EC%84%BC%ED%84%B0/data=!4m2!3m1!1s0x355aa20bf46ee129:0x4b200a3700468552"},{"가게명":"Yume Plaza","카테고리":"쇼핑","세부 카테고리":"히로시마 특산물/기념품","체인점":"X","위치":"나카구 혼도리 8-28 2F","구역":"혼도리","설명/특징":"혼도리 주변의 쇼핑 복합 시설","평점":"4.0","리뷰":"614","대표 리뷰":"히로시마 지역 특산품 전문 기념품숍. 꿀, 간장 등 로컬 식품 풍부. 관광 안내도 운영. 무료 샘플 제공.","영업시간":"10:00~19:00","영업요일":"연중무휴","1인 소비 가격대":"다양","대표 메뉴":"패션, 잡화","추천 메뉴":"각 점포 상품","대표사항":"복합 쇼핑 시설","추천사항":"혼도리 쇼핑 중 방문","기타 정보(팁 등)":"혼도리 쇼핑 코스에 포함","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능 (점포별 상이)","사전에 확인해야 할 것":"부정기 휴무 확인","외국어 메뉴":"영어 표기 있음","예약":"예약 불필요","면세":"점포별 상이 (확인 필요)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/Yume+Plaza/data=!4m2!3m1!1s0x355aa20ef150edef:0x6bb90ac58f81f148"},{"가게명":"ABC-MART Hiroshima Hondori 7ban Shop","카테고리":"쇼핑","세부 카테고리":"신발","체인점":"O","위치":"나카구 혼도리 7-32","구역":"혼도리","설명/특징":"ABC-MART 혼도리 7번지점. 스포츠 신발 및 패션 신발 종합","평점":"3.9","리뷰":"90","대표 리뷰":"혼도리 7번지 ABC마트. 스탭 친절. 사이즈 풍부. 할인 상품 찾기 좋음.","영업시간":"11:00~20:30","영업요일":"연중무휴","1인 소비 가격대":"저~중간","대표 메뉴":"스니커즈, 부츠","추천 메뉴":"한국보다 저렴한 한정 스니커즈","대표사항":"혼도리 신발 전문점","추천사항":"한정 모델 확인 추천","기타 정보(팁 등)":"혼도리 상점가 내 위치","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"연중무휴","외국어 메뉴":"영어 표기 있음","예약":"예약 불필요","면세":"면세 가능 (5,000엔 이상, 여권 지참)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/ABC-MART+Hiroshima+Hondori+7ban+Shop/data=!4m2!3m1!1s0x355aa20e863a8657:0x86fb6139014ef927"},{"가게명":"McDonald's","카테고리":"식당","세부 카테고리":"패스트푸드(체인)","체인점":"O","위치":"나카구 혼도리 6-8","구역":"혼도리","설명/특징":"일본 맥도날드. 한국과 다른 일본 한정 메뉴(테리야키버거, 달걀버거 등) 체험 가능","평점":"3.6","리뷰":"1897","대표 리뷰":"혼도리 쇼핑 거리 내. 3층 구조로 좌석 넉넉. 24시간 운영. 일본 한정 메뉴도 즐길 수 있음.","영업시간":"24시간","영업요일":"연중무휴","1인 소비 가격대":"500~1,000엔","대표 메뉴":"테리야키버거, 에비필레오버거","추천 메뉴":"테리야키버거, 감자튀김","대표사항":"일본 한정 메뉴 패스트푸드","추천사항":"간편 식사에 적합","기타 정보(팁 등)":"일본 한정 메뉴 테리야키버거 추천. 앱 쿠폰 활용 가능","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"07:00~24:00, 연중무휴","외국어 메뉴":"영어·한국어 메뉴 있음","예약":"예약 불필요","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/place/McDonald's/data=!4m2!3m1!1s0x355aa20c29c8ca4f:0xc5fa2a7951f9512b"},{"가게명":"Staubucks Coffee 히로시마 헤이와오도리점","카테고리":"카페","세부 카테고리":"카페(체인)","체인점":"O","위치":"나카구 오오테마치 2-11-10 NHK 히로시마방송센터 2F","구역":"오오테마치","설명/특징":"스타벅스 히로시마 헤이와오도리점. 평화공원과 원폭돔 인근에 위치한 스타벅스로, 투명한 창문을 통해 평화공원 경치를 감상하며 커피를 즐길 수 있음. 히로시마 한정 텀블러·머그 판매","평점":"4.2","리뷰":"485","대표 리뷰":"NHK 히로시마방송센터 2층. 원폭돔 도보 5분. 창가 카운터석에서 거리 구경. 비교적 한산한 편.","영업시간":"07:30~21:00(평일), 08:00~20:00(주말)","영업요일":"연중무휴","1인 소비 가격대":"500~1,000엔","대표 메뉴":"라테, 프라푸치노","추천 메뉴":"히로시마 한정 텀블러 구매 + 커피","대표사항":"평화공원 뷰 스타벅스","추천사항":"히로시마 한정 굿즈 구매 추천","기타 정보(팁 등)":"평화공원 관람 전후 휴식 최적. 히로시마 한정 텀블러·머그 종류 확인","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"히로시마 한정 굿즈 재고 확인 (스타벅스 공식 앱), 연중무휴","외국어 메뉴":"영어·한국어 메뉴 있음","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료) / 머그·텀블러 등 굿즈는 5,000엔 이상 면세 가능","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/search/Staubucks%20Coffee%20%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88%20%ED%97%A4%EC%9D%B4%EC%99%80%EC%98%A4%EB%8F%84%EB%A6%AC%EC%A0%90%20Hiroshima"},{"가게명":"Okonomiyaki Hassei (핫세이)","카테고리":"식당","세부 카테고리":"오코노미야키","체인점":"X","위치":"나카구 후지미초 4-17","구역":"후지미초","설명/특징":"야겐보리 지역의 히로시마 오코노미야키 노포. 현지인이 즐겨 찾는 곳으로 전통 히로시마식 오코노미야키를 고집하는 가게. 철판 앞 카운터 자리에서 직접 구워주는 과정을 볼 수 있음","평점":"4.6","리뷰":"1046","대표 리뷰":"글루텐프리 옵션 있는 오코노미야키. 베이컨·치즈 핫세이 스페셜 추천. 벽에 그림 그리는 독특한 분위기. 영어 메뉴.","영업시간":"11:30~13:30, 17:30~22:00","영업요일":"월요일 휴무","1인 소비 가격대":"1,000~2,000엔","대표 메뉴":"히로시마식 오코노미야키 (소바+고기)","추천 메뉴":"스페셜 오코노미야키 (새우+오징어+고기)","대표사항":"야겐보리 현지인 오코노미야키 노포","추천사항":"저녁 술 한 잔 곁들이기 좋음","기타 정보(팁 등)":"관광지 분위기 없는 진짜 현지 가게. 이자카야 투어 전 식사 추천","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (노포, Visa 불가 가능성)","사전에 확인해야 할 것":"수요일 휴무 (4/18·4/19 확인), 저녁 17:00 이후 방문 추천","외국어 메뉴":"일본어 메뉴 위주 (사진 메뉴 있음)","예약":"전화 예약 권장\nTEL: 구글맵에서 확인","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/search/Okonomiyaki%20Hassei%20%28%ED%95%AB%EC%84%B8%EC%9D%B4%29%20Hiroshima"},{"가게명":"Bakery Shingo (베이커리 신고)","카테고리":"카페","세부 카테고리":"베이커리","체인점":"X","위치":"나카구 테초","구역":"텟포초 인근","설명/특징":"히로시마 현지인이 줄 서서 사는 로컬 베이커리. 매일 아침 구운 빵이 진열되며 특히 크림과 팥이 들어간 일본식 빵이 인기. 히로시마 안데르센과 함께 혼도리 베이커리 투어 코스","평점":"4.4","리뷰":"180","대표 리뷰":"히로시마 숨은 베이커리 맛집. 맨타이코 빵, 애플 빵 등 추천. 2층 이트인 공간에서 강 뷰 즐기기.","영업시간":"09:00~16:00","영업요일":"수요일/일요일 휴무","1인 소비 가격대":"200~600엔","대표 메뉴":"크림빵, 멜론빵, 팥빵","추천 메뉴":"갓 구운 크림빵 + 블랙커피","대표사항":"히로시마 로컬 베이커리","추천사항":"아침 일찍 방문 추천","기타 정보(팁 등)":"인기 빵 오전 중 소진. 안데르센과 함께 베이커리 투어 코스","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모, Visa 불가 가능성)","사전에 확인해야 할 것":"월요일 휴무 (4/18·4/21 방문 불가), 오픈 시간 재확인","외국어 메뉴":"일본어 위주","예약":"예약 불가 (선착순)","면세":"면세 불가 (빵류·음식)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/search/Bakery%20Shingo%20%28%EB%B2%A0%EC%9D%B4%EC%BB%A4%EB%A6%AC%20%EC%8B%A0%EA%B3%A0%29%20Hiroshima"},{"가게명":"Tosca (토스카)","카테고리":"식당","세부 카테고리":"이탈리안","체인점":"X","위치":"나카구 엔코바시초 6-12","구역":"히로시마 시내","설명/특징":"히로시마 굴을 다양한 방식으로 즐길 수 있는 굴 전문 레스토랑. 굴 프라이, 굴 그라탱, 굴 리조또 등 이탈리안 스타일로 히로시마 굴을 재해석. 런치 코스가 가성비 좋음","평점":"4.2","리뷰":"264","대표 리뷰":"나폴리탄 피자 화덕 전문. 정통 이탈리아 피자. 스탭 영어 가능.","영업시간":"17:30~23:00","영업요일":"월요일 휴무","1인 소비 가격대":"2,000~4,000엔","대표 메뉴":"굴 프라이, 굴 그라탱","추천 메뉴":"런치 굴 코스 (굴 3가지 요리 포함)","대표사항":"이탈리안 스타일 히로시마 굴 전문","추천사항":"런치 코스 강력 추천","기타 정보(팁 등)":"4월 굴 시즌 막바지, 시즌 마지막 굴 즐기기 최적. 예약 권장","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"월요일 휴무 (4/18·4/21 방문 불가), 예약 권장 (구글맵 또는 전화), 4월 굴 시즌 메뉴 확인","외국어 메뉴":"영어 메뉴 있음","예약":"예약 강력 권장\n▶ 구글맵 예약: https://www.google.com/maps/search/Tosca+굴+히로시마\n▶ 전화 예약 (영어 가능 확인 필요)","면세":"면세 불가 (음식점)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/search/Tosca%20%28%ED%86%A0%EC%8A%A4%EC%B9%B4%29%20Hiroshima"},{"가게명":"Bar Shin (바 신)","카테고리":"바/술집","세부 카테고리":"바","체인점":"X","위치":"나카구","구역":"히로시마 시내","설명/특징":"히로시마 나가레카와의 클래식 위스키 바. 일본 위스키와 세계 각국 위스키를 폭넓게 취급. 바 마스터가 추천해주는 한 잔이 여행의 하이라이트가 될 수 있는 곳. 조용하고 품격 있는 분위기","평점":"4.1","리뷰":"22","대표 리뷰":"첫 방문 손님 거절 정책 있음. 단골 위주의 바.","영업시간":"21:00~","영업요일":"확인 필요","1인 소비 가격대":"2,000~4,000엔","대표 메뉴":"일본 위스키 (야마자키, 히비키, 니카)","추천 메뉴":"마스터 추천 일본 위스키 온더록","대표사항":"히로시마 클래식 위스키 바","추천사항":"야마자키·히비키 등 일본 위스키 마니아 추천","기타 정보(팁 등)":"소규모 카운터 바. 마스터와 대화하며 즐기는 스타일. 일본어로만 소통 가능할 수 있음 (번역 앱 준비)","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"현금 권장 (소규모 바, Visa 불가 가능성)","사전에 확인해야 할 것":"일요일 휴무 (4/19·4/20 확인), 18:00 이후 방문, 소규모라 만석 가능성 있음 (예약 권장)","외국어 메뉴":"일본어 위주 (위스키명 영어 표기)","예약":"소규모, 예약 권장\n▶ 전화: 구글맵에서 확인","면세":"면세 불가 (음식·음료)","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/search/Bar%20Shin%20%28%EB%B0%94%20%EC%8B%A0%29%20Hiroshima"},{"가게명":"기타큐슈 로스터스 히로시마점","카테고리":"카페","세부 카테고리":"스페셜티 커피","체인점":"X","위치":"나카구 히로시마 시내","구역":"히로시마 시내","설명/특징":"규슈 기타큐슈 발 스페셜티 커피 로스터리 히로시마점. 각 원두의 특성을 살린 핸드드립과 에스프레소 음료가 강점. 히로시마 스페셜티 커피 씬에서 손꼽히는 곳","평점":"0.0","리뷰":"0","대표 리뷰":"기타큐슈 로스터스 히로시마 지점. 자세한 정보 확인 필요.","영업시간":"확인 필요","영업요일":"확인 필요","1인 소비 가격대":"확인 필요","대표 메뉴":"싱글오리진 핸드드립, 에스프레소","추천 메뉴":"바리스타 추천 싱글오리진","대표사항":"규슈 스페셜티 커피 히로시마점","추천사항":"원두 구매 + 드립 커피","기타 정보(팁 등)":"마리푸 커피, 24/7과 함께 히로시마 스페셜티 커피 투어 코스","꼭 방문해야 할 가게":"-","카드 사용 가능 여부":"Visa 포함 카드 가능","사전에 확인해야 할 것":"화요일 휴무 (4/18~21 중 화요일 없음), 영업시간 재확인","외국어 메뉴":"영어 메뉴 있음","예약":"예약 불가 (선착순)","면세":"면세 불가 (음식·음료) / 원두 포장 구매 시 5,000엔 이상이면 확인 필요","URL":"구글맵 링크","google_maps_url":"https://www.google.com/maps/search/%EA%B8%B0%ED%83%80%ED%81%90%EC%8A%88%20%EB%A1%9C%EC%8A%A4%ED%84%B0%EC%8A%A4%20%ED%9E%88%EB%A1%9C%EC%8B%9C%EB%A7%88%EC%A0%90%20Hiroshima"}];
+
+const CAT_EMOJI = {"관광지":"🏛️","식당":"🍽️","카페":"☕","쇼핑":"🛍️","바/술집":"🍺","엔터테인먼트":"🎮","교통":"🚉"};
+
+let currentCat = "전체";
+let currentArea = "전체";
+let currentSort = "default";
+let currentSearch = "";
+let isCompact = false;
+let savedPlaces = new Set(JSON.parse(localStorage.getItem("hiroshima_saved") || "[]"));
+let expandedCards = new Set();
+
+function saveSaved() {
+  localStorage.setItem("hiroshima_saved", JSON.stringify([...savedPlaces]));
+}
+
+function getFiltered() {
+  let data = [...RAW_DATA];
+  
+  if (currentCat !== "전체") {
+    data = data.filter(d => d["카테고리"] === currentCat);
+  }
+  
+  if (currentArea !== "전체") {
+    data = data.filter(d => d["구역"].includes(currentArea));
+  }
+  
+  if (currentSearch) {
+    const q = currentSearch.toLowerCase();
+    data = data.filter(d =>
+      d["가게명"].toLowerCase().includes(q) ||
+      d["설명/특징"].toLowerCase().includes(q) ||
+      d["대표 메뉴"].toLowerCase().includes(q) ||
+      d["추천 메뉴"].toLowerCase().includes(q) ||
+      d["세부 카테고리"].toLowerCase().includes(q) ||
+      d["구역"].toLowerCase().includes(q) ||
+      d["대표 리뷰"].toLowerCase().includes(q) ||
+      d["기타 정보(팁 등)"].toLowerCase().includes(q)
+    );
+  }
+  
+  if (currentSort === "rating") {
+    data.sort((a, b) => parseFloat(b["평점"]) - parseFloat(a["평점"]));
+  } else if (currentSort === "reviews") {
+    data.sort((a, b) => parseInt(b["리뷰"].replace(/,/g, "")) - parseInt(a["리뷰"].replace(/,/g, "")));
+  } else if (currentSort === "name") {
+    data.sort((a, b) => a["가게명"].localeCompare(b["가게명"]));
+  }
+  
+  return data;
+}
+
+function renderStars(rating) {
+  const r = parseFloat(rating);
+  if (isNaN(r)) return "";
+  const full = Math.floor(r);
+  const half = r - full >= 0.3;
+  let s = "★".repeat(full);
+  if (half) s += "⭐".repeat(1); 
+  return s;
+}
+
+function formatReviews(n) {
+  const num = parseInt(n.replace(/,/g, ""));
+  if (isNaN(num)) return "";
+  if (num >= 10000) return (num/10000).toFixed(1) + "만";
+  if (num >= 1000) return (num/1000).toFixed(1) + "천";
+  return num.toString();
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+function makeCard(d, idx) {
+  const name = escapeHtml(d["가게명"]);
+  const cat = d["카테고리"];
+  const subcat = escapeHtml(d["세부 카테고리"]);
+  const area = escapeHtml(d["구역"]);
+  const desc = escapeHtml(d["설명/특징"]);
+  const rating = d["평점"];
+  const reviews = d["리뷰"];
+  const price = d["1인 소비 가격대"];
+  const hours = d["영업시간"];
+  const days = d["영업요일"];
+  const mainMenu = d["대표 메뉴"];
+  const recMenu = d["추천 메뉴"];
+  const tip = d["기타 정보(팁 등)"];
+  const warn = d["사전에 확인해야 할 것"];
+  const review = d["대표 리뷰"];
+  const card = d["카드 사용 가능 여부"];
+  const langMenu = d["외국어 메뉴"];
+  const reservation = d["예약"];
+  const taxfree = d["면세"];
+  const url = d["google_maps_url"];
+  const isChain = d["체인점"] === "O";
+  const isSaved = savedPlaces.has(name);
+  const isExpanded = expandedCards.has(name);
+  
+  const emoji = CAT_EMOJI[cat] || "📍";
+  const ratingNum = parseFloat(rating);
+  const ratingColor = ratingNum >= 4.5 ? "#06d6a0" : ratingNum >= 4.0 ? "#ffd23f" : "#a0a0b8";
+  
+  // Build chips for expanded
+  const chips = [];
+  if (price && price !== "-") chips.push(`<span class="info-chip yellow">💴 ${escapeHtml(price)}</span>`);
+  if (hours && hours !== "-") chips.push(`<span class="info-chip blue">🕐 ${escapeHtml(hours)}</span>`);
+  if (days && days !== "-") chips.push(`<span class="info-chip">📅 ${escapeHtml(days)}</span>`);
+  if (card && card !== "-") chips.push(`<span class="info-chip green">💳 ${escapeHtml(card.length > 30 ? card.substring(0,30)+"..." : card)}</span>`);
+  if (taxfree && taxfree !== "해당없음 (무료 입장)" && taxfree !== "해당없음" && taxfree !== "-") chips.push(`<span class="info-chip blue">🛃 ${escapeHtml(taxfree)}</span>`);
+  if (reservation && reservation !== "-") chips.push(`<span class="info-chip">📞 ${escapeHtml(reservation)}</span>`);
+  if (langMenu && langMenu !== "-" && langMenu !== "해당없음") chips.push(`<span class="info-chip green">🌐 ${escapeHtml(langMenu)}</span>`);
+
+  return `<div class="place-card" id="card-${idx}">
+  <div class="card-main" onclick="toggleCard('${name.replace(/'/g,"\\'")}',${idx})">
+    <div class="card-header">
+      <div class="cat-icon">${emoji}</div>
+      <div class="card-info">
+        <div class="card-name">${name}${isChain ? ' <span style="font-size:10px;color:var(--text3)">[체인]</span>' : ""}</div>
+        <div class="card-meta">
+          <span class="badge badge-cat">${subcat}</span>
+          <span class="badge badge-area">📍${area}</span>
+        </div>
+        ${!isNaN(ratingNum) ? `<div class="rating-wrap">
+          <span style="color:${ratingColor};font-size:13px">★</span>
+          <span class="rating-num" style="color:${ratingColor}">${rating}</span>
+          <span class="review-count">(${formatReviews(reviews)}개 리뷰)</span>
+        </div>` : ""}
+      </div>
+    </div>
+    ${desc ? `<div class="card-desc">${desc}</div>` : ""}
+    ${(mainMenu && mainMenu !== "-") ? `<div class="card-quick">
+      <span class="quick-info">🍴 ${escapeHtml(mainMenu.length>40?mainMenu.substring(0,40)+"...":mainMenu)}</span>
+      ${(price && price !== "-") ? `<span class="quick-info">💴 ${escapeHtml(price)}</span>` : ""}
+    </div>` : ""}
+  </div>
+  <div class="card-expanded${isExpanded ? " open" : ""}" id="exp-${idx}">
+    ${warn && warn !== "-" && warn.length > 3 ? `<div class="exp-warn">⚠️ ${escapeHtml(warn)}</div>` : ""}
+    ${tip && tip !== "-" && tip.length > 3 ? `<div class="exp-highlight">💡 ${escapeHtml(tip)}</div>` : ""}
+    ${chips.length ? `<div class="info-chips">${chips.join("")}</div>` : ""}
+    ${(recMenu && recMenu !== "-") ? `<div class="exp-section"><div class="exp-label">추천 메뉴</div><div class="exp-value">🍽️ ${escapeHtml(recMenu)}</div></div>` : ""}
+    ${review && review.length > 5 ? `<div class="review-quote">${escapeHtml(review.length>120?review.substring(0,120)+"...":review)}</div>` : ""}
+  </div>
+  <div class="card-actions">
+    ${url ? `<button class="action-btn map-btn" onclick="openMap('${url.replace(/'/g,"\\'")}')" >🗺️ 지도열기</button>` : ""}
+    <button class="action-btn save-btn${isSaved?" saved":""}" id="save-${idx}" onclick="toggleSave('${name.replace(/'/g,"\\'")}',${idx})">
+      ${isSaved ? "⭐ 저장됨" : "☆ 저장"}
+    </button>
+    <button class="action-btn" onclick="sharePlace('${name.replace(/'/g,"\\'")}',${idx})">↗️ 공유</button>
+  </div>
+</div>`;
+}
+
+function toggleCard(name, idx) {
+  const expEl = document.getElementById(`exp-${idx}`);
+  if (expandedCards.has(name)) {
+    expandedCards.delete(name);
+    expEl.classList.remove("open");
+  } else {
+    expandedCards.add(name);
+    expEl.classList.add("open");
+  }
+}
+
+function openMap(url) {
+  window.open(url, "_blank");
+}
+
+function toggleSave(name, idx) {
+  if (savedPlaces.has(name)) {
+    savedPlaces.delete(name);
+  } else {
+    savedPlaces.add(name);
+  }
+  saveSaved();
+  const btn = document.getElementById(`save-${idx}`);
+  if (btn) {
+    const isSaved = savedPlaces.has(name);
+    btn.textContent = isSaved ? "⭐ 저장됨" : "☆ 저장";
+    btn.className = `action-btn save-btn${isSaved ? " saved" : ""}`;
+  }
+  // Update saved screen if visible
+  if (document.getElementById("saved-screen").style.display === "flex") {
+    renderSaved();
+  }
+}
+
+function sharePlace(name, idx) {
+  const d = RAW_DATA.find(r => r["가게명"] === name);
+  if (!d) return;
+  const text = `${d["가게명"]}\n📍 ${d["구역"]} | ${d["세부 카테고리"]}\n⭐ ${d["평점"]} | 💴 ${d["1인 소비 가격대"]}\n🕐 ${d["영업시간"]}\n${d["google_maps_url"]}`;
+  if (navigator.share) {
+    navigator.share({ text }).catch(() => copyText(text));
+  } else {
+    copyText(text);
+    alert("클립보드에 복사되었습니다!");
+  }
+}
+
+function copyText(text) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand("copy");
+  document.body.removeChild(ta);
+}
+
+function render() {
+  const data = getFiltered();
+  document.getElementById("resultCount").textContent = data.length;
+  document.getElementById("total-count").textContent = data.length;
+  
+  const container = document.getElementById("listContainer");
+  container.innerHTML = data.map((d, i) => makeCard(d, i)).join("");
+  
+  if (isCompact) {
+    container.classList.add("compact-view");
+  } else {
+    container.classList.remove("compact-view");
+  }
+}
+
+function renderSaved() {
+  const savedScreen = document.getElementById("saved-screen");
+  savedScreen.innerHTML = "";
+  
+  const savedData = RAW_DATA.filter(d => savedPlaces.has(d["가게명"]));
+  
+  if (savedData.length === 0) {
+    savedScreen.innerHTML = `<div class="empty-state"><div class="icon">⭐</div><p>저장한 장소가 없어요.<br>카드의 ☆ 버튼으로 저장하세요!</p></div>`;
+    return;
+  }
+  
+  const container = document.createElement("div");
+  container.className = "list-container";
+  container.style.padding = "10px 12px";
+  container.innerHTML = savedData.map((d, i) => makeCard(d, 9000+i)).join("");
+  savedScreen.appendChild(container);
+}
+
+function showScreen(screen) {
+  const mainScreen = document.getElementById("main-screen");
+  const savedScreen = document.getElementById("saved-screen");
+  const navAll = document.getElementById("navAll");
+  const navSaved = document.getElementById("navSaved");
+  
+  if (screen === "all") {
+    mainScreen.style.display = "block";
+    savedScreen.style.display = "none";
+    navAll.classList.add("active");
+    navSaved.classList.remove("active");
+  } else {
+    mainScreen.style.display = "none";
+    savedScreen.style.display = "flex";
+    savedScreen.style.flexDirection = "column";
+    navAll.classList.remove("active");
+    navSaved.classList.add("active");
+    renderSaved();
+  }
+}
+
+function copyChecklist() {
+  const savedData = RAW_DATA.filter(d => savedPlaces.has(d["가게명"]));
+  if (savedData.length === 0) {
+    alert("저장된 장소가 없어요! 먼저 장소를 저장해주세요.");
+    return;
+  }
+  
+  let text = "🗾 히로시마 여행 체크리스트\n";
+  text += "=".repeat(30) + "\n\n";
+  
+  const byArea = {};
+  savedData.forEach(d => {
+    const area = d["구역"] || "기타";
+    if (!byArea[area]) byArea[area] = [];
+    byArea[area].push(d);
+  });
+  
+  for (const area of Object.keys(byArea)) {
+    text += `📍 [${area}]\n`;
+    byArea[area].forEach(d => {
+      text += `  ☐ ${d["가게명"]}`;
+      if (d["영업시간"] && d["영업시간"] !== "-") text += ` (${d["영업시간"]})`;
+      text += "\n";
+      if (d["추천 메뉴"] && d["추천 메뉴"] !== "-") text += `     🍽️ ${d["추천 메뉴"]}\n`;
+    });
+    text += "\n";
+  }
+  
+  copyText(text);
+  alert(`✅ 체크리스트가 복사되었어요!\n(${savedData.length}개 장소)`);
+}
+
+// Search
+document.getElementById("searchInput").addEventListener("input", function() {
+  currentSearch = this.value.trim();
+  document.getElementById("searchClear").style.display = currentSearch ? "block" : "none";
+  render();
+});
+
+document.getElementById("searchClear").addEventListener("click", function() {
+  document.getElementById("searchInput").value = "";
+  currentSearch = "";
+  this.style.display = "none";
+  render();
+});
+
+// Category filter
+document.querySelectorAll("[data-cat]").forEach(btn => {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll("[data-cat]").forEach(b => b.classList.remove("active"));
+    this.classList.add("active");
+    currentCat = this.dataset.cat;
+    render();
+  });
+});
+
+// Area filter
+document.getElementById("areaFilter").addEventListener("change", function() {
+  currentArea = this.value;
+  render();
+});
+
+// Sort
+document.getElementById("sortSelect").addEventListener("change", function() {
+  currentSort = this.value;
+  render();
+});
+
+// View toggle
+document.getElementById("viewList").addEventListener("click", function() {
+  isCompact = false;
+  this.classList.add("active");
+  document.getElementById("viewCompact").classList.remove("active");
+  render();
+});
+
+document.getElementById("viewCompact").addEventListener("click", function() {
+  isCompact = true;
+  this.classList.add("active");
+  document.getElementById("viewList").classList.remove("active");
+  render();
+});
+
+// Scroll to top
+window.addEventListener("scroll", function() {
+  const btn = document.getElementById("scrollTop");
+  if (window.scrollY > 400) {
+    btn.classList.add("visible");
+  } else {
+    btn.classList.remove("visible");
+  }
+});
+
+// Update category filter counts
+function updateFilterCounts() {
+  document.querySelectorAll("[data-cat]").forEach(btn => {
+    const cat = btn.dataset.cat;
+    if (cat === "전체") {
+      btn.textContent = "전체 " + RAW_DATA.length;
+    } else {
+      const count = RAW_DATA.filter(d => d["카테고리"] === cat).length;
+      const emoji = CAT_EMOJI[cat] || "";
+      const label = cat === "엔터테인먼트" ? "엔터" : cat;
+      btn.textContent = `${emoji} ${label} ${count}`;
+    }
+  });
+}
+
+// Init
+updateFilterCounts();
+render();
+</script>
+</body>
+</html>
